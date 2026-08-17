@@ -1,18 +1,20 @@
 <?php
 
-namespace App\Livewire\Admin\Agent;
+namespace App\Livewire\Admin\Coin;
 
-use App\Models\Agent;
+use App\Models\Coin;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 #[Layout('layouts.dashboard')]
-class AList extends Component
+class CList extends Component
 {
     use WithPagination;
 
     public $search = '';
+
+    public $coinIdToDelete;
 
     public function paginationView()
     {
@@ -31,10 +33,10 @@ class AList extends Component
 
     public function delete()
     {
-        $user = Agent::find($this->userIdToDelete);
-        if ($user) {
-            $user->delete();
-            session()->flash('success', 'Agent deleted successfully.');
+        $coin = Coin::find($this->coinIdToDelete);
+        if ($coin) {
+            $coin->delete();
+            session()->flash('success', 'Coin deleted successfully.');
         }
         $this->dispatch('close-delete-modal');
         $this->dispatch('scroll-to-top');
@@ -42,15 +44,16 @@ class AList extends Component
 
     public function render()
     {
-        return view('livewire.admin.agent.a-list', [
-            'users' => Agent::when($this->search, function ($query) {
+        return view('livewire.admin.coin.c-list', [
+            'coins' => Coin::when($this->search, function ($query) {
                 $query->where(function ($q) {
                     $q->where('name', 'like', '%'.$this->search.'%')
-                        ->orWhere('email', 'like', '%'.$this->search.'%');
+                        ->orWhere('coins', 'like', '%'.$this->search.'%')
+                        ->orWhere('price', 'like', '%'.$this->search.'%');
                 });
             })
-                ->orderBy('created_at', 'desc')
-                ->paginate(10)->withPath(route('admin.agent.list')),
+                ->orderBy('id', 'desc')
+                ->paginate(10)->withPath(route('admin.coin.list')),
         ]);
     }
 }

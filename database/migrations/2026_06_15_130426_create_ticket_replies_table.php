@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('coins', function (Blueprint $table) {
+        Schema::create('ticket_replies', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->decimal('price', 8, 2);
-            $table->integer('quantity');
-            $table->boolean('is_active')->default(true);
+            $table->foreignId('ticket_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->morphs('senderable');
+            $table->longText('message');
+            $table->timestamps();
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('coins');
+        Schema::dropIfExists('ticket_replies');
     }
 };

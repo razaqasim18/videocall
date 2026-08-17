@@ -31,7 +31,16 @@
             <!-- MAIN CONTENT -->
             <main class="flex-1 p-4 overflow-y-auto lg:p-8">
                 {{ $slot }}
+                <div class="pt-8 text-sm text-center border-t border-gray-100 text-dark/50">
+                    <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved. Designed and Developed
+                        by
+                        <a class="font-bold text-primary"
+                            href="{{ config('app.created_by_link') }}">{{ config('app.created_by') }}</a>
+                    </p>
+                </div>
             </main>
+
+
 
         </div>
     </div>
@@ -46,9 +55,9 @@
             @csrf
         </form>
     @endauth
-   
-   @livewireScripts
-   @stack('scripts')
+
+    @livewireScripts
+    @stack('scripts')
     <script>
         // Scroll to top on success/error
         Livewire.on('scroll-to-top', () => {

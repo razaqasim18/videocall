@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Database\Factories\UserFactory;
+use Database\Seeders\UserSeeder;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,7 +22,7 @@ use Illuminate\Notifications\Notifiable;
     'is_blocked',
     'is_verified',
     'is_subscribed',
-    'subscription_id'
+    'subscription_id',
 ])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
@@ -52,5 +53,10 @@ class User extends Authenticatable
     public function subscription()
     {
         return $this->belongsTo(Subscription::class);
+    }
+
+    public function transaction()
+    {
+        return $this->hasMany(UserSeeder::class);
     }
 }

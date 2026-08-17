@@ -53,7 +53,9 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
-
+    'created_by' => env('CREATED_BY', 'http://localhost'),
+    'created_by_link' => env('CREATED_BY_LINK', 'http://localhost'),
+    'application_link' => env('APPLICATION_LINK', 'http://localhost'),
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

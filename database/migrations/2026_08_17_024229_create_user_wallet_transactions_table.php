@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cms_pages', function (Blueprint $table) {
+        Schema::create('user_wallet_transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('slug')->unique();
-            $table->text('content');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->enum('type', ['credit', 'debit']);
+            $table->decimal('amount', 10, 2);
+            $table->integer('balance_after');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cms_pages');
+        Schema::dropIfExists('user_wallet_transactions');
     }
 };

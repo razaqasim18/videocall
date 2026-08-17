@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Setting;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class SettingSeeder extends Seeder
@@ -20,5 +19,11 @@ class SettingSeeder extends Seeder
         Setting::updateOrCreate(['key' => 'contact_email'], ['value' => '']);
 
         Setting::updateOrCreate(['key' => 'agent_commission'], ['value' => '10']);
+
+        Setting::updateOrCreate(['key' => 'privacy_policy'], ['value' => '']);
+
+        Setting::updateOrCreate(['key' => 'term_condition_policy'], ['value' => '']);
+
+        Setting::updateOrCreate(['key' => 'about_application'], ['value' => '']);
     }
 }

@@ -4,7 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Coins extends Model
+class Coin extends Model
 {
-        public $timestamps = false;
+    protected $fillable = [
+        'name',
+        'coins',
+        'price',
+        'is_active',
+    ];
+
+    public $timestamps = false;
 }
