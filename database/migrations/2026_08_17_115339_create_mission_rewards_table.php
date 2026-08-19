@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('missions', function (Blueprint $table) {
+        Schema::create('mission_rewards', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('task')->nullable(true);
-            $table->decimal('reward',8,2)->nullable(true);
+            $table->string('mission');
+            $table->string('task');
+            $table->integer('coin')->default(1);
             $table->boolean('is_active')->default(true);
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('missions');
+        Schema::dropIfExists('mission_rewards');
     }
 };

@@ -10,6 +10,8 @@ use App\Livewire\Admin\Coin\CList;
 use App\Livewire\Admin\Coin\CoinForm;
 use App\Livewire\Admin\Home as AdminHome;
 use App\Livewire\Admin\Profile as AdminProfile;
+use App\Livewire\Admin\Reward\RewardForm;
+use App\Livewire\Admin\Reward\RewardList;
 use App\Livewire\Admin\Setting\AboutApplicationSetting;
 use App\Livewire\Admin\Setting\GeneralSetting;
 use App\Livewire\Admin\Setting\PrivacyPolicySetting;
@@ -99,6 +101,15 @@ Route::prefix('admin')
                 Route::get('/create', CoinForm::class)->name('create');
                 Route::get('/edit/{id}', CoinForm::class)->name('edit');
             });
+
+            // reward
+            Route::prefix('reward')
+                ->name('reward.')
+                ->group(function () {
+                    Route::get('/list', RewardList::class)->name('list');
+                    Route::get('/create', RewardForm::class)->name('create');
+                    Route::get('/edit/{id}', RewardForm::class)->name('edit');
+                });
 
             // ticket
             Route::prefix('ticket')

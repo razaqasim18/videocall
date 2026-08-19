@@ -125,7 +125,7 @@
                 </div>
             </div>
 
-            <p class="px-2 mt-8 mb-4 text-xs font-semibold tracking-wider uppercase text-dark/40">Coins & Reward</p>
+            <p class="px-2 mt-8 mb-4 text-xs font-semibold tracking-wider uppercase text-dark/40">Rewards & Missions</p>
 
             <!-- User Dropdown -->
             <div x-data="{ open: {{ request()->routeIs('admin.coin.*') ? 'true' : 'false' }} }" class="relative">
@@ -168,7 +168,49 @@
                 </div>
             </div>
 
-            <p class="px-2 mt-8 mb-4 text-xs font-semibold tracking-wider uppercase text-dark/40">Subscription</p>
+            <!-- Reward Dropdown -->
+            <div x-data="{ open: {{ request()->routeIs('admin.reward.*') ? 'true' : 'false' }} }" class="relative">
+                <button type="button" @click="open = !open"
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group
+                    {{ request()->routeIs('admin.reward.*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-dark/70 hover:bg-gray-100 hover:text-primary' }}">
+
+                    <div class="flex items-center gap-3">
+                        <x-heroicon-s-gift class="w-5 h-5" />
+                        <span class="font-medium">Rewards</span>
+                    </div>
+
+                    <div :class="open ? 'rotate-180' : ''" class="transition-transform duration-200">
+                        <x-heroicon-s-chevron-down class="w-4 h-4" />
+                    </div>
+                </button>
+
+                <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-100"
+                    x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+                    class="pl-4 mt-2 space-y-1">
+                    <a href="{{ route('admin.reward.create') }}" wire:navigate
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all
+                        {{ request()->routeIs('admin.reward.create') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
+                        <span
+                            class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.reward.create') ? 'bg-primary' : 'bg-gray-300' }}"></span>
+                        Create Reward
+                    </a>
+                </div>
+
+                <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-100"
+                    x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+                    class="pl-4 mt-2 space-y-1">
+                    <a href="{{ route('admin.reward.list') }}" wire:navigate
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all
+                        {{ request()->routeIs('admin.reward.list') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
+                        <span
+                            class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.reward.list') ? 'bg-primary' : 'bg-gray-300' }}"></span>
+                        Reward List
+                    </a>
+                </div>
+            </div>
+
+            <p class="px-2 mt-8 mb-4 text-xs font-semibold tracking-wider uppercase text-dark/40">Subscription & Features
+            </p>
 
             <!-- Subscription Dropdown -->
             <div x-data="{ open: {{ request()->routeIs('admin.subscriptions.*') ? 'true' : 'false' }} }" class="relative">
@@ -213,7 +255,7 @@
                 </div>
             </div>
 
-            <p class="px-2 mt-8 mb-4 text-xs font-semibold tracking-wider uppercase text-dark/40">Quries</p>
+            <p class="px-2 mt-8 mb-4 text-xs font-semibold tracking-wider uppercase text-dark/40">Customer Support</p>
 
             <!-- Ticket Dropdown -->
             <div x-data="{ open: {{ request()->routeIs('admin.ticket.*') ? 'true' : 'false' }} }" class="relative">
