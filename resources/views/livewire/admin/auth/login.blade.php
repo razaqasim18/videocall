@@ -85,13 +85,13 @@
 
                 </button>
             </form>
-            <div class="mt-6 text-center">
+            {{-- <div class="mt-6 text-center">
                 <a href="/" class="text-sm font-medium transition-colors text-primary hover:text-secondary">Back
                     to sign in</a>
             </div>
 
             <!-- Footer -->
-            {{-- <div class="mt-8 text-center">
+             <div class="mt-8 text-center">
                 <p class="text-sm text-dark/60">
                     Don't have an account?
                     <a href="/register"
