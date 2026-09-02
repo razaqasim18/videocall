@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use Database\Factories\UserFactory;
 use Database\Seeders\UserSeeder;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -58,5 +59,58 @@ class User extends Authenticatable
     public function transaction()
     {
         return $this->hasMany(UserSeeder::class);
+    }
+
+    public function createdConversations(): HasMany
+    {
+        return $this->hasMany(
+            Conversation::class,
+            'created_by'
+        );
+    }
+
+    public function conversationParticipants(): HasMany
+    {
+        return $this->hasMany(
+            ConversationParticipant::class
+        );
+    }
+
+    /**
+     * Conversations where the user is a participant.
+     */
+    public function conversations(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Conversation::class,
+            'conversation_participants'
+        )
+            ->withPivot([
+                'joined_at',
+                'left_at',
+                'last_read_at',
+                'is_muted',
+            ])
+            ->withTimestamps();
+    }
+
+    /**
+     * Messages sent by this user.
+     */
+    public function messages(): HasMany
+    {
+        return $this->hasMany(
+            Message::class
+        );
+    }
+
+    /**
+     * Read receipts belonging to this user.
+     */
+    public function messageReadReceipts(): HasMany
+    {
+        return $this->hasMany(
+            MessageReadReceipt::class
+        );
     }
 }

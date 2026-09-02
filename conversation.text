@@ -1,0 +1,153 @@
+8. Reply System
+
+Suppose user 5 sends:
+
+Message #1
+
+"Are you coming today?"
+
+User 10 replies:
+
+Message #2
+
+reply_to_message_id = 1
+
+"Yes, I will come."
+
+Then Laravel makes this very easy:
+
+$message->replyTo;
+
+returns message #1.
+
+And:
+
+$message->replies;
+
+returns all messages replying to that message.
+
+For example:
+
+$message = Message::with([
+    'user',
+    'replyTo.user',
+    'replyTo.attachments',
+    'attachments',
+])->find($id);
+9. Getting a Conversation With Messages
+
+For a chat screen:
+
+$conversation = Conversation::with([
+    'participants.user',
+    'messages' => function ($query) {
+        $query->with([
+            'user',
+            'attachments',
+            'replyTo.user',
+            'replyTo.attachments',
+        ])->latest();
+    },
+])->findOrFail($conversationId);
+
+Then:
+
+$conversation->messages
+
+contains the messages.
+
+Each message can have:
+
+$message->user
+$message->attachments
+$message->replyTo
+$message->replyTo->user
+10. Creating a Text Message
+$message = Message::create([
+    'conversation_id' => $conversation->id,
+    'user_id' => auth()->id(),
+    'type' => 'text',
+    'body' => 'Hello!',
+]);
+11. Creating a Reply
+$message = Message::create([
+    'conversation_id' => $conversation->id,
+    'user_id' => auth()->id(),
+    'type' => 'text',
+    'body' => 'Yes, I will be there.',
+    'reply_to_message_id' => $originalMessage->id,
+]);
+12. Creating an Image Message
+$message = Message::create([
+    'conversation_id' => $conversation->id,
+    'user_id' => auth()->id(),
+    'type' => 'image',
+]);
+
+Then:
+
+$message->attachments()->create([
+    'type' => 'image',
+    'file_path' => 'chats/images/photo.jpg',
+    'file_name' => 'photo.jpg',
+    'mime_type' => 'image/jpeg',
+    'file_size' => 250000,
+]);
+13. Creating a Video Message
+$message = Message::create([
+    'conversation_id' => $conversation->id,
+    'user_id' => auth()->id(),
+    'type' => 'video',
+]);
+
+Then:
+
+$message->attachments()->create([
+    'type' => 'video',
+    'file_path' => 'chats/videos/video.mp4',
+    'file_name' => 'video.mp4',
+    'mime_type' => 'video/mp4',
+    'file_size' => 5000000,
+    'thumbnail_path' => 'chats/thumbnails/video.jpg',
+    'metadata' => [
+        'width' => 1920,
+        'height' => 1080,
+        'duration' => 35,
+    ],
+]);
+14. Creating a Link Message
+$message = Message::create([
+    'conversation_id' => $conversation->id,
+    'user_id' => auth()->id(),
+    'type' => 'link',
+    'body' => 'Check this website',
+    'url' => 'https://example.com',
+]);
+15. Read / Delivered Status
+
+When a message is delivered:
+
+$message->readReceipts()->updateOrCreate(
+    [
+        'user_id' => auth()->id(),
+    ],
+    [
+        'delivered_at' => now(),
+    ]
+);
+
+When it is read:
+
+$message->readReceipts()->updateOrCreate(
+    [
+        'user_id' => auth()->id(),
+    ],
+    [
+        'delivered_at' => now(),
+        'read_at' => now(),
+    ]
+);
+
+You can then check:
+
+$message->readReceipts
