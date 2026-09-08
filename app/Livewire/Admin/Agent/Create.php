@@ -57,8 +57,8 @@ class Create extends Component
         $agent->notify(new AgentRegistrationNotification($this->email, $this->password));
 
         session()->flash('success', 'Agent created successfully!');
-
-        return redirect()->route('admin.agent.list');
+        $this->reset(['name', 'email', 'password', 'profile_image', 'wallet', 'is_blocked']);
+        $this->dispatch('scroll-to-top');
     }
 
     public function render()

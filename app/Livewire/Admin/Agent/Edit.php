@@ -73,7 +73,7 @@ class Edit extends Component
         Agent::find($this->agentId)->update($data);
 
         session()->flash('success', 'Agent updated successfully!');
-
+        $this->dispatch('scroll-to-top');
     }
 
     public function render()

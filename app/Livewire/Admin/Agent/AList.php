@@ -14,6 +14,8 @@ class AList extends Component
 
     public $search = '';
 
+    public int $userIdToDelete;
+
     public function paginationView()
     {
         return 'vendor.pagination.tailwind';

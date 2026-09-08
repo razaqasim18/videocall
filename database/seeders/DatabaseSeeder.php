@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             AgentSeeder::class,
             SettingSeeder::class,
-            CmsSeeder::class,
+            // CmsSeeder::class,
         ]);
     }
 }

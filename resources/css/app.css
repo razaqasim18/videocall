@@ -1,47 +1,110 @@
 @import "tailwindcss";
+
 @plugin "@tailwindcss/typography";
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+/*
+|--------------------------------------------------------------------------
+| Theme
+|--------------------------------------------------------------------------
+*/
+
 @theme {
+    /* Fonts */
     --font-sans:
-        "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
-        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-        "Noto Color Emoji";
-}
+        "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
-@theme {
-    /* Font */
-    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+    /*
+    |--------------------------------------------------------------------------
+    | Brand Colors
+    |--------------------------------------------------------------------------
+    */
 
-    /* Custom colors */
-    --color-primary: #35618e;
-    --color-secondary: #9fcafd;
-    --color-dark: #191c20;
+    --color-primary: #5b5af7;
+    --color-secondary: #8a7bff;
+
+    --color-success: #12b76a;
+    --color-error: #e11d48;
+    --color-warning: #ff8f47;
+    --color-gold: #ffd700;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Light Mode
+    |--------------------------------------------------------------------------
+    */
+
+    --color-background: #f3f5fb;
     --color-surface: #ffffff;
-    --color-background: #f8f9ff;
+
+    --color-text: #0b1220;
+    --color-muted: #667085;
+    --color-border: #e4e7ec;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dark Mode
+    |--------------------------------------------------------------------------
+    */
+
+    --color-dark-background: #0b1020;
+    --color-dark-surface: #121a2d;
+
+    --color-dark-text: #f2f4f7;
+    --color-dark-muted: #98a2b3;
+    --color-dark-border: #2a3652;
+
+    --color-dark-primary: #8a93ff;
 }
+
+/*
+|--------------------------------------------------------------------------
+| Components
+|--------------------------------------------------------------------------
+*/
 
 @layer components {
+    /*
+    |--------------------------------------------------------------------------
+    | Glass Effect
+    |--------------------------------------------------------------------------
+    */
+
     .glass {
         background: rgb(255 255 255 / 30%);
         backdrop-filter: blur(5px);
-        border-bottom: 1px solid rgba(53, 97, 142, 0.1);
+        border-bottom: 1px solid rgb(91 90 247 / 10%);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Gradient Text
+    |--------------------------------------------------------------------------
+    */
+
     .gradient-text {
-        background: linear-gradient(135deg, #35618e 0%, #9fcafd 100%);
+        background: linear-gradient(135deg, #5b5af7 0%, #5b5af7 100%);
+
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Hero Gradient
+    |--------------------------------------------------------------------------
+    */
+
     .hero-gradient {
         background: linear-gradient(
             135deg,
-            rgba(53, 97, 142, 0.1) 0%,
-            rgba(159, 202, 253, 0.1) 100%
+            rgb(91 90 247 / 10%) 0%,
+            rgb(138 123 255 / 10%) 100%
         );
     }
 }

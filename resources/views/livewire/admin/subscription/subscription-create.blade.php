@@ -44,12 +44,9 @@
                     <!-- Price -->
                     <div class="space-y-2">
                         <label class="block text-sm font-medium text-dark/70">Price</label>
-                        <div class="relative">
-                            <span class="absolute text-sm -translate-y-1/2 left-4 top-1/2 text-dark/40">$</span>
-                            <input type="number" wire:model="price"
-                                class="w-full py-3 pl-8 pr-4 transition-all border outline-none bg-background border-primary/10 rounded-xl text-dark focus:border-primary focus:ring-1 focus:ring-primary"
-                                placeholder="0.00">
-                        </div>
+                        <input type="number" wire:model="price"
+                            class="w-full px-4 py-3 transition-all border outline-none bg-background border-primary/10 rounded-xl text-dark focus:border-primary focus:ring-1 focus:ring-primary"
+                            placeholder="0.00">
                         @error('price')
                             <span class="block text-xs text-red-600">{{ $message }}</span>
                         @enderror

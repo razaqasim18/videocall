@@ -1,19 +1,22 @@
 <div class="space-y-8">
-    <!-- Header -->
-    <div class="flex items-center justify-between">
-        <div class="flex items-center gap-4">
-            <div class="flex items-center justify-center w-12 h-12 bg-primary/10 rounded-2xl text-primary">
-                <x-heroicon-o-user-plus class="w-6 h-6" />
-            </div>
-            <div>
-                <h1 class="text-3xl font-bold text-dark">Create <span class="text-primary">Agent</span></h1>
-                <p class="text-dark/60">Register a new agent to manage your facility subscriptions.</p>
-            </div>
-        </div>
+    <!-- Header Section -->
+    <div class="space-y-8">
+        <x-header-section headerwprimary="Create" headerwsecondary="Agent"
+            tagline="Register a new agent to manage your facility subscriptions." />
+    </div>
+
+    <!-- Alerts -->
+    <div id="successdiv">
+        @if (session()->has('success'))
+            <x-alert :message="session()->get('success')" status="1"></x-alert>
+        @endif
+        @if (session()->has('error'))
+            <x-alert :message="session()->get('error')" status="0"></x-alert>
+        @endif
     </div>
 
     <form wire:submit.prevent="saveAgent" class="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        <!-- LEFT: Basic Information -->
+        <!-- LEFT: Personal Information -->
         <div class="space-y-6 lg:col-span-2">
             <div class="p-8 border shadow-sm bg-surface rounded-3xl border-primary/10">
                 <div class="flex items-center gap-3 mb-6">
@@ -24,6 +27,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <!-- Full Name -->
                     <div class="space-y-2 md:col-span-2">
                         <label class="block text-sm font-medium text-dark/70">Full Name</label>
                         <input type="text" wire:model="name"
@@ -34,6 +38,7 @@
                         @enderror
                     </div>
 
+                    <!-- Email Address -->
                     <div class="space-y-2">
                         <label class="block text-sm font-medium text-dark/70">Email Address</label>
                         <input type="email" wire:model="email"
@@ -44,30 +49,58 @@
                         @enderror
                     </div>
 
+                    <!-- Password -->
                     <div class="space-y-2">
                         <label class="block text-sm font-medium text-dark/70">Password</label>
                         <input type="password" wire:model="password"
-                            class="w-full px-4 py-3 border outline-none bg-background border-primary/10 rounded-xl text-dark focus:border-primary focus:ring-1 focus:ring-primary">
+                            class="w-full px-4 py-3 border outline-none bg-background border-primary/10 rounded-xl text-dark focus:border-primary focus:ring-1 focus:ring-primary"
+                            placeholder="••••••••">
                         @error('password')
                             <span class="block text-xs text-red-600">{{ $message }}</span>
                         @enderror
                     </div>
 
-
+                    <!-- Profile Image Upload (Redesigned) -->
                     <div class="space-y-2 md:col-span-2">
                         <label class="block text-sm font-medium text-dark/70">Profile Image</label>
-                        <input type="file" wire:model="profile_image"
-                            class="w-full px-4 py-3 border outline-none bg-background border-primary/10 rounded-xl text-dark file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20">
+
+                        <div class="flex flex-col items-center gap-4 sm:flex-row">
+                            <!-- Preview Circle -->
+                            <div class="relative group">
+                                <div
+                                    class="w-24 h-24 overflow-hidden border-2 rounded-full border-primary/20 bg-background">
+                                    @if ($profile_image)
+                                        <img src="{{ $profile_image->temporaryUrl() }}"
+                                            class="object-cover w-full h-full">
+                                    @else
+                                        <div class="flex items-center justify-center w-full h-full text-dark/30">
+                                            <x-heroicon-o-user class="w-12 h-12" />
+                                        </div>
+                                    @endif
+                                </div>
+                                <!-- Edit overlay -->
+                                <div
+                                    class="absolute inset-0 flex items-center justify-center transition-opacity rounded-full opacity-0 bg-black/40 group-hover:opacity-100">
+                                    <x-heroicon-o-camera class="w-6 h-6 text-white" />
+                                </div>
+                            </div>
+
+                            <!-- Upload Box -->
+                            <div class="relative flex-1 w-full">
+                                <div
+                                    class="relative flex flex-col items-center justify-center p-4 text-center transition border-2 border-dashed bg-background border-primary/20 rounded-2xl hover:border-primary/50">
+                                    <p class="text-sm font-semibold text-dark">Click to upload photo</p>
+                                    <p class="text-xs text-dark/50">JPG, PNG (Max 2MB)</p>
+                                    <input type="file" wire:model="profile_image"
+                                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
                         @error('profile_image')
                             <span class="block text-xs text-red-600">{{ $message }}</span>
                         @enderror
-
-                        @if ($profile_image)
-                            <div class="p-2 mt-4 border rounded-xl bg-gray-50 w-fit">
-                                <img src="{{ $profile_image->temporaryUrl() }}"
-                                    class="object-cover w-24 h-24 rounded-lg">
-                            </div>
-                        @endif
+                        <div wire:loading wire:target="profile_image" class="text-xs text-primary">Uploading image...
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,19 +113,18 @@
                     <h2 class="mb-6 text-lg font-bold text-dark">Account Config</h2>
 
                     <div class="space-y-6">
+                        <!-- Wallet Balance -->
                         <div class="space-y-2">
                             <label class="block text-sm font-medium text-dark/70">Initial Wallet Balance</label>
-                            <div class="relative">
-                                <span class="absolute text-sm -translate-y-1/2 left-4 top-1/2 text-dark/40">Rs</span>
-                                <input type="number" wire:model="wallet" step="0.01"
-                                    class="w-full py-3 pl-8 pr-4 border outline-none bg-background border-primary/10 rounded-xl text-dark focus:border-primary focus:ring-1 focus:ring-primary"
-                                    placeholder="0.00">
-                            </div>
+                            <input type="number" wire:model="wallet" step="0.01"
+                                class="w-full px-4 py-3 border outline-none bg-background border-primary/10 rounded-xl text-dark focus:border-primary focus:ring-1 focus:ring-primary"
+                                placeholder="0.00">
                             @error('wallet')
                                 <span class="block text-xs text-red-600">{{ $message }}</span>
                             @enderror
                         </div>
 
+                        <!-- Block Agent Toggle -->
                         <div
                             class="flex items-center justify-between p-4 border bg-background rounded-2xl border-primary/10">
                             <div class="flex items-center gap-3">
@@ -108,6 +140,7 @@
                     </div>
                 </div>
 
+                <!-- Action Button -->
                 <button type="submit" wire:loading.attr="disabled"
                     class="flex items-center justify-center w-full gap-2 py-4 font-bold text-white transition-all transform bg-gradient-to-r from-primary to-secondary rounded-2xl hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-1 disabled:opacity-70">
                     <span wire:loading.remove wire:target="saveAgent">Create Agent</span>

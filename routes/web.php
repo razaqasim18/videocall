@@ -8,6 +8,8 @@ use App\Livewire\Admin\Auth\Login as AdminLogin;
 use App\Livewire\Admin\Auth\ResetPassword as AdminResetPassword;
 use App\Livewire\Admin\Coin\CList;
 use App\Livewire\Admin\Coin\CoinForm;
+use App\Livewire\Admin\Gift\GiftForm;
+use App\Livewire\Admin\Gift\GList as GiftList;
 use App\Livewire\Admin\Home as AdminHome;
 use App\Livewire\Admin\Profile as AdminProfile;
 use App\Livewire\Admin\Reward\RewardForm;
@@ -109,6 +111,15 @@ Route::prefix('admin')
                     Route::get('/list', RewardList::class)->name('list');
                     Route::get('/create', RewardForm::class)->name('create');
                     Route::get('/edit/{id}', RewardForm::class)->name('edit');
+                });
+
+            // reward
+            Route::prefix('gift')
+                ->name('gift.')
+                ->group(function () {
+                    Route::get('/list', GiftList::class)->name('list');
+                    Route::get('/create', GiftForm::class)->name('create');
+                    Route::get('/edit/{id}', GiftForm::class)->name('edit');
                 });
 
             // ticket

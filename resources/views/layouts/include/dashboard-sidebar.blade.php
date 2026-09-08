@@ -60,64 +60,46 @@
             <!-- Agent Dropdown -->
             <div x-data="{ open: {{ request()->routeIs('admin.agent.*') ? 'true' : 'false' }} }" class="relative">
                 <button type="button" @click="open = !open"
-                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group
-                    {{ request()->routeIs('admin.agent.*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-dark/70 hover:bg-gray-100 hover:text-primary' }}">
-
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group {{ request()->routeIs('admin.agent.*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-dark/70 hover:bg-gray-100 hover:text-primary' }}">
                     <div class="flex items-center gap-3">
                         <x-heroicon-s-user-group class="w-5 h-5" />
                         <span class="font-medium">Agents</span>
                     </div>
-
                     <div :class="open ? 'rotate-180' : ''" class="transition-transform duration-200">
                         <x-heroicon-s-chevron-down class="w-4 h-4" />
                     </div>
                 </button>
-
-                <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-100"
-                    x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
-                    class="pl-4 mt-2 space-y-1">
+                <div x-show="open" x-cloak x-transition class="pl-4 mt-2 space-y-1">
                     <a href="{{ route('admin.agent.create') }}" wire:navigate
-                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all
-                        {{ request()->routeIs('admin.agent.create') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('admin.agent.create') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
                         <span
                             class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.agent.create') ? 'bg-primary' : 'bg-gray-300' }}"></span>
                         Create Agent
                     </a>
                     <a href="{{ route('admin.agent.list') }}" wire:navigate
-                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all
-                        {{ request()->routeIs('admin.agent.list') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('admin.agent.list') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
                         <span
                             class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.agent.list') ? 'bg-primary' : 'bg-gray-300' }}"></span>
                         Agent List
                     </a>
-
                 </div>
             </div>
-
-
 
             <!-- User Dropdown -->
             <div x-data="{ open: {{ request()->routeIs('admin.user.*') ? 'true' : 'false' }} }" class="relative">
                 <button type="button" @click="open = !open"
-                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group
-                    {{ request()->routeIs('admin.user.*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-dark/70 hover:bg-gray-100 hover:text-primary' }}">
-
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group {{ request()->routeIs('admin.user.*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-dark/70 hover:bg-gray-100 hover:text-primary' }}">
                     <div class="flex items-center gap-3">
                         <x-heroicon-s-user-group class="w-5 h-5" />
                         <span class="font-medium">Users</span>
                     </div>
-
                     <div :class="open ? 'rotate-180' : ''" class="transition-transform duration-200">
                         <x-heroicon-s-chevron-down class="w-4 h-4" />
                     </div>
                 </button>
-
-                <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-100"
-                    x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
-                    class="pl-4 mt-2 space-y-1">
+                <div x-show="open" x-cloak x-transition class="pl-4 mt-2 space-y-1">
                     <a href="{{ route('admin.user.list') }}" wire:navigate
-                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all
-                        {{ request()->routeIs('admin.user.list') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('admin.user.list') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
                         <span
                             class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.user.list') ? 'bg-primary' : 'bg-gray-300' }}"></span>
                         User List
@@ -127,40 +109,27 @@
 
             <p class="px-2 mt-8 mb-4 text-xs font-semibold tracking-wider uppercase text-dark/40">Rewards & Missions</p>
 
-            <!-- User Dropdown -->
+            <!-- Coins Dropdown -->
             <div x-data="{ open: {{ request()->routeIs('admin.coin.*') ? 'true' : 'false' }} }" class="relative">
                 <button type="button" @click="open = !open"
-                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group
-                    {{ request()->routeIs('admin.coin.*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-dark/70 hover:bg-gray-100 hover:text-primary' }}">
-
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group {{ request()->routeIs('admin.coin.*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-dark/70 hover:bg-gray-100 hover:text-primary' }}">
                     <div class="flex items-center gap-3">
                         <x-heroicon-s-gift class="w-5 h-5" />
                         <span class="font-medium">Coins</span>
                     </div>
-
                     <div :class="open ? 'rotate-180' : ''" class="transition-transform duration-200">
                         <x-heroicon-s-chevron-down class="w-4 h-4" />
                     </div>
                 </button>
-
-                <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-100"
-                    x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
-                    class="pl-4 mt-2 space-y-1">
+                <div x-show="open" x-cloak x-transition class="pl-4 mt-2 space-y-1">
                     <a href="{{ route('admin.coin.create') }}" wire:navigate
-                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all
-                        {{ request()->routeIs('admin.coin.create') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('admin.coin.create') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
                         <span
                             class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.coin.create') ? 'bg-primary' : 'bg-gray-300' }}"></span>
                         Create Coin
                     </a>
-                </div>
-
-                <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-100"
-                    x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
-                    class="pl-4 mt-2 space-y-1">
                     <a href="{{ route('admin.coin.list') }}" wire:navigate
-                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all
-                        {{ request()->routeIs('admin.coin.list') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('admin.coin.list') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
                         <span
                             class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.coin.list') ? 'bg-primary' : 'bg-gray-300' }}"></span>
                         Coin List
@@ -171,40 +140,55 @@
             <!-- Reward Dropdown -->
             <div x-data="{ open: {{ request()->routeIs('admin.reward.*') ? 'true' : 'false' }} }" class="relative">
                 <button type="button" @click="open = !open"
-                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group
-                    {{ request()->routeIs('admin.reward.*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-dark/70 hover:bg-gray-100 hover:text-primary' }}">
-
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group {{ request()->routeIs('admin.reward.*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-dark/70 hover:bg-gray-100 hover:text-primary' }}">
                     <div class="flex items-center gap-3">
                         <x-heroicon-s-gift class="w-5 h-5" />
                         <span class="font-medium">Rewards</span>
                     </div>
-
                     <div :class="open ? 'rotate-180' : ''" class="transition-transform duration-200">
                         <x-heroicon-s-chevron-down class="w-4 h-4" />
                     </div>
                 </button>
-
-                <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-100"
-                    x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
-                    class="pl-4 mt-2 space-y-1">
+                <div x-show="open" x-cloak x-transition class="pl-4 mt-2 space-y-1">
                     <a href="{{ route('admin.reward.create') }}" wire:navigate
-                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all
-                        {{ request()->routeIs('admin.reward.create') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('admin.reward.create') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
                         <span
                             class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.reward.create') ? 'bg-primary' : 'bg-gray-300' }}"></span>
                         Create Reward
                     </a>
-                </div>
-
-                <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-100"
-                    x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
-                    class="pl-4 mt-2 space-y-1">
                     <a href="{{ route('admin.reward.list') }}" wire:navigate
-                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all
-                        {{ request()->routeIs('admin.reward.list') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('admin.reward.list') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
                         <span
                             class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.reward.list') ? 'bg-primary' : 'bg-gray-300' }}"></span>
                         Reward List
+                    </a>
+                </div>
+            </div>
+
+            <!-- Gift Dropdown -->
+            <div x-data="{ open: {{ request()->routeIs('admin.gift.*') ? 'true' : 'false' }} }" class="relative">
+                <button type="button" @click="open = !open"
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group {{ request()->routeIs('admin.gift.*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-dark/70 hover:bg-gray-100 hover:text-primary' }}">
+                    <div class="flex items-center gap-3">
+                        <x-heroicon-s-gift class="w-5 h-5" />
+                        <span class="font-medium">Gift</span>
+                    </div>
+                    <div :class="open ? 'rotate-180' : ''" class="transition-transform duration-200">
+                        <x-heroicon-s-chevron-down class="w-4 h-4" />
+                    </div>
+                </button>
+                <div x-show="open" x-cloak x-transition class="pl-4 mt-2 space-y-1">
+                    <a href="{{ route('admin.gift.create') }}" wire:navigate
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('admin.gift.create') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
+                        <span
+                            class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.gift.create') ? 'bg-primary' : 'bg-gray-300' }}"></span>
+                        Create Gift
+                    </a>
+                    <a href="{{ route('admin.gift.list') }}" wire:navigate
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('admin.gift.list') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
+                        <span
+                            class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.gift.list') ? 'bg-primary' : 'bg-gray-300' }}"></span>
+                        Gift List
                     </a>
                 </div>
             </div>
@@ -214,44 +198,29 @@
 
             <!-- Subscription Dropdown -->
             <div x-data="{ open: {{ request()->routeIs('admin.subscriptions.*') ? 'true' : 'false' }} }" class="relative">
-
                 <button type="button" @click="open = !open"
-                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group {{ request()->routeIs('partner.subscriptions.*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-dark/70 hover:bg-gray-100 hover:text-primary' }}">
-
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group {{ request()->routeIs('admin.subscriptions.*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-dark/70 hover:bg-gray-100 hover:text-primary' }}">
                     <div class="flex items-center gap-3">
                         <x-heroicon-s-ellipsis-horizontal-circle class="w-5 h-5" />
                         <span class="font-medium">Subscriptions</span>
                     </div>
-
-                    <div :class="{ 'rotate-180': open }" class="transition-transform duration-200">
+                    <div :class="open ? 'rotate-180' : ''" class="transition-transform duration-200">
                         <x-heroicon-s-chevron-down class="w-4 h-4" />
                     </div>
                 </button>
-
-                <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-100"
-                    x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
-                    class="pl-4 mt-2 space-y-1">
-
+                <div x-show="open" x-cloak x-transition class="pl-4 mt-2 space-y-1">
                     <a href="{{ route('admin.subscriptions.create') }}" wire:navigate
                         class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('admin.subscriptions.create') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
-
                         <span
-                            class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.subscriptions.create') ? 'bg-primary' : 'bg-gray-300' }}">
-                        </span>
-
+                            class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.subscriptions.create') ? 'bg-primary' : 'bg-gray-300' }}"></span>
                         Create Subscriptions
                     </a>
-
                     <a href="{{ route('admin.subscriptions.list') }}" wire:navigate
                         class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('admin.subscriptions.list') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
-
                         <span
-                            class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.subscriptions.list') ? 'bg-primary' : 'bg-gray-300' }}">
-                        </span>
-
+                            class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.subscriptions.list') ? 'bg-primary' : 'bg-gray-300' }}"></span>
                         Subscriptions List
                     </a>
-
                 </div>
             </div>
 
@@ -259,90 +228,61 @@
 
             <!-- Ticket Dropdown -->
             <div x-data="{ open: {{ request()->routeIs('admin.ticket.*') ? 'true' : 'false' }} }" class="relative">
-
                 <button type="button" @click="open = !open"
-                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group {{ request()->routeIs('partner.ticket.*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-dark/70 hover:bg-gray-100 hover:text-primary' }}">
-
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group {{ request()->routeIs('admin.ticket.*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-dark/70 hover:bg-gray-100 hover:text-primary' }}">
                     <div class="flex items-center gap-3">
                         <x-heroicon-s-ticket class="w-5 h-5" />
                         <span class="font-medium">Ticket</span>
                     </div>
-
-                    <div :class="{ 'rotate-180': open }" class="transition-transform duration-200">
+                    <div :class="open ? 'rotate-180' : ''" class="transition-transform duration-200">
                         <x-heroicon-s-chevron-down class="w-4 h-4" />
                     </div>
                 </button>
-
-                <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-100"
-                    x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
-                    class="pl-4 mt-2 space-y-1">
-
-
-
-
+                <div x-show="open" x-cloak x-transition class="pl-4 mt-2 space-y-1">
                     <a href="{{ route('admin.ticket.list') }}" wire:navigate
                         class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('admin.ticket.list') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
-
                         <span
-                            class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.ticket.list') ? 'bg-primary' : 'bg-gray-300' }}">
-                        </span>
-
+                            class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.ticket.list') ? 'bg-primary' : 'bg-gray-300' }}"></span>
                         Ticket List
                     </a>
-
                 </div>
             </div>
 
             <p class="px-2 mt-8 mb-4 text-xs font-semibold tracking-wider uppercase text-dark/40">Website Settings</p>
 
             <!-- Website Settings Dropdown -->
-            <div x-data="{ open: false }" class="relative">
+            <div x-data="{ open: {{ request()->routeIs('admin.setting.*') ? 'true' : 'false' }} }" class="relative">
                 <button type="button" @click="open = !open"
-                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group
-                    {{ request()->routeIs('admin.setting.*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-dark/70 hover:bg-gray-100 hover:text-primary' }}">
-
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group {{ request()->routeIs('admin.setting.*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-dark/70 hover:bg-gray-100 hover:text-primary' }}">
                     <div class="flex items-center gap-3">
                         <x-heroicon-c-wrench class="w-5 h-5" />
                         <span class="font-medium">Website Settings</span>
                     </div>
-
                     <div :class="open ? 'rotate-180' : ''" class="transition-transform duration-200">
                         <x-heroicon-s-chevron-down class="w-4 h-4" />
                     </div>
                 </button>
-
-                <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-100"
-                    x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
-                    class="pl-4 mt-2 space-y-1">
-
+                <div x-show="open" x-cloak x-transition class="pl-4 mt-2 space-y-1">
                     <a href="{{ route('admin.setting.general') }}" wire:navigate
-                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all
-                        {{ request()->routeIs('admin.setting.general') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('admin.setting.general') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
                         <span
                             class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.setting.general') ? 'bg-primary' : 'bg-gray-300' }}"></span>
                         General Settings
                     </a>
-
                     <a href="{{ route('admin.setting.privacy-policy') }}" wire:navigate
-                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all
-                        {{ request()->routeIs('admin.setting.privacy-policy') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('admin.setting.privacy-policy') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
                         <span
                             class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.setting.privacy-policy') ? 'bg-primary' : 'bg-gray-300' }}"></span>
-                        Privacy Policy Settings
+                        Privacy Policy
                     </a>
-
-
                     <a href="{{ route('admin.setting.term-condition') }}" wire:navigate
-                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all
-                        {{ request()->routeIs('admin.setting.term-condition') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('admin.setting.term-condition') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
                         <span
                             class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.setting.term-condition') ? 'bg-primary' : 'bg-gray-300' }}"></span>
-                        Terms & Conditions Settings
+                        Terms & Conditions
                     </a>
-
                     <a href="{{ route('admin.setting.about-application') }}" wire:navigate
-                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all
-                        {{ request()->routeIs('admin.setting.about-application') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('admin.setting.about-application') ? 'text-primary font-bold bg-primary/10' : 'text-dark/60 hover:text-primary hover:bg-gray-100' }}">
                         <span
                             class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.setting.about-application') ? 'bg-primary' : 'bg-gray-300' }}"></span>
                         About Application
