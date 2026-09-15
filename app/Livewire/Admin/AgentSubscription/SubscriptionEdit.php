@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Livewire\Admin\Subscription;
+namespace App\Livewire\Admin\AgentSubscription;
 
-use App\Models\Subscription;
-use App\Models\SubscriptionCategory; // Added missing import
+use App\Models\AgentSubscription;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -19,63 +18,54 @@ class SubscriptionEdit extends Component
 
     public ?float $price = null;
 
-    public ?int $days = null;
+    public ?int $coins = null;
 
     public ?string $description = '';
 
-    public ?int $subscription_category_id = null; // Added this property
-
+  
     public bool $is_active = false;
 
-    public bool $is_feature = false;
-
+  
     public function mount($id)
     {
         $this->id = $id;
 
         // Fetch the subscription and fill the form
-        $subscription = Subscription::findOrFail($id);
+        $subscription = AgentSubscription::findOrFail($id);
 
         $this->name = $subscription->name;
         $this->price = $subscription->price;
-        $this->days = $subscription->duration_days;
+        $this->coins = $subscription->coins;
         $this->description = $subscription->description ?? '';
-        $this->subscription_category_id = $subscription->subscription_category_id; // Fill category
         $this->is_active = (bool) $subscription->is_active;
-        $this->is_feature = (bool) $subscription->is_feature;
     }
 
     public function saveSubscription()
     {
         $this->validate([
-            'subscription_category_id' => 'required|exists:subscription_categories,id', // Added validation
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
-            'days' => 'required|integer|min:1',
+            'coins' => 'required|integer|min:1',
             'description' => 'nullable|string',
         ]);
 
         // Find the model instance and update it
-        $subscription = Subscription::findOrFail($this->id);
+        $subscription = AgentSubscription::findOrFail($this->id);
 
         $subscription->update([
-            'subscription_category_id' => $this->subscription_category_id,
             'name' => $this->name,
             'price' => $this->price,
-            'duration_days' => $this->days,
+            'coins' => $this->coins,
             'description' => $this->description,
             'is_active' => $this->is_active ? 1 : 0,
-            'is_feature' => $this->is_feature ? 1 : 0,
         ]);
 
-        session()->flash('success', 'Subscription updated successfully!');
+        session()->flash('success', 'Agent Subscription updated successfully!');
         $this->dispatch('scroll-to-top');
     }
 
     public function render()
     {
-        return view('livewire.admin.subscription.subscription-edit', [
-            'subscriptionCategories' => SubscriptionCategory::active()->get(),
-        ]);
+        return view('livewire.admin.agent-subscription.subscription-edit');
     }
 }

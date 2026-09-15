@@ -4,7 +4,7 @@
         <div>
             <h1 class="text-3xl font-bold text-dark">Profile <span class="text-primary">Settings</span></h1>
             <p class="text-dark/60">Update your personal information and facility profile.</p>
-        </div>
+        </div> 
 
         <div id="successdiv">
             @if (session()->has('success'))

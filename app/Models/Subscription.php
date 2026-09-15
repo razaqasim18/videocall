@@ -8,7 +8,7 @@ class Subscription extends Model
 {
     public $timestamps = false;
 
-    protected $fillable = ['name', 'description', 'price', 'duration_days', 'is_active', 'is_feature'];
+    protected $fillable = ['subscription_category_id', 'name', 'description', 'price', 'duration_days', 'is_active', 'is_feature'];
 
     public function user()
     {

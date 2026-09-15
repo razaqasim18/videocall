@@ -11,7 +11,7 @@ use App\Livewire\Admin\Coin\CoinForm;
 use App\Livewire\Admin\Gift\GiftForm;
 use App\Livewire\Admin\Gift\GList as GiftList;
 use App\Livewire\Admin\Home as AdminHome;
-use App\Livewire\Admin\Profile as AdminProfile;
+use App\Livewire\Profile;
 use App\Livewire\Admin\Reward\RewardForm;
 use App\Livewire\Admin\Reward\RewardList;
 use App\Livewire\Admin\Setting\AboutApplicationSetting;
@@ -21,10 +21,24 @@ use App\Livewire\Admin\Setting\TermConditionSetting;
 use App\Livewire\Admin\Subscription\SubscriptionCreate;
 use App\Livewire\Admin\Subscription\SubscriptionEdit;
 use App\Livewire\Admin\Subscription\SubscriptionList;
+use App\Livewire\Admin\AgentSubscription\SubscriptionCreate as AgentSubscriptionCreate;
+use App\Livewire\Admin\AgentSubscription\SubscriptionEdit as AgentSubscriptionEdit;
+use App\Livewire\Admin\AgentSubscription\SubscriptionList as AgentSubscriptionList;
+
+use App\Livewire\Admin\SubscriptionCategory\SubscriptionCategory;
 use App\Livewire\Admin\Ticket\Chat;
 use App\Livewire\Admin\Ticket\TList;
 use App\Livewire\Admin\User\Detail as UserDetail;
 use App\Livewire\Admin\User\UList as Users;
+
+use  App\Livewire\Agent\Auth\ForgotPassword as AgentForgotPassword;
+use  App\Livewire\Agent\Auth\Login as AgentLogin;
+use  App\Livewire\Agent\Auth\ResetPassword as AgentResetPassword;
+use App\Livewire\Agent\Home as AgentHome;
+use App\Livewire\Agent\Profile as AgentProfile;
+
+use App\Livewire\MessagePage;
+use App\Livewire\ResetPassword as UserResetPassword;
 use App\Models\Agent;
 use App\Models\Ticket;
 use App\Models\User;
@@ -61,8 +75,12 @@ Route::get('/test', function () {
         'agent_ticket' => $agentTicket->ticket_no,
     ]);
 });
-Route::redirect('/', '/admin/login');
 
+Route::redirect('/', '/admin/login');
+Route::get('/password/reset', UserResetPassword::class)->name('password.reset');
+Route::get('success/{status}/{message}', MessagePage::class)->name('success.page');
+
+// admin routes
 Route::prefix('admin')
     ->name('admin.')
     ->group(function () {
@@ -72,6 +90,7 @@ Route::prefix('admin')
             Route::get('/reset-password/{token}', AdminResetPassword::class)->name('reset-password');
         });
         Route::middleware(['admin', 'redirectifauth'])->group(function () {
+
             Route::post('/logout', function () {
                 Auth::guard('admin')->logout();
 
@@ -82,7 +101,8 @@ Route::prefix('admin')
             })->name('logout');
 
             Route::get('/dashboard', AdminHome::class)->name('dashboard');
-            Route::get('/profile', AdminProfile::class)->name('profile');
+            Route::get('/profile', Profile::class)->name('profile');
+            Route::get('/subscription/category', SubscriptionCategory::class)->name('subscription.category');
 
             // user management routes
             Route::prefix('user')->name('user.')->group(function () {
@@ -139,6 +159,15 @@ Route::prefix('admin')
                     Route::get('/edit/{id}', SubscriptionEdit::class)->name('edit');
                 });
 
+            //agent subscriptions
+            Route::prefix('agent/subscriptions')
+                ->name('agent.subscriptions.')
+                ->group(function () {
+                    Route::get('/list', AgentSubscriptionList::class)->name('list');
+                    Route::get('/create', AgentSubscriptionCreate::class)->name('create');
+                    Route::get('/edit/{id}', AgentSubscriptionEdit::class)->name('edit');
+                });    
+
             // settings
             Route::prefix('setting')
                 ->name('setting.')
@@ -152,17 +181,31 @@ Route::prefix('admin')
         });
     });
 
+
+
+// agent route 
 Route::prefix('agent')
     ->name('agent.')
     ->group(function () {
         Route::middleware(['checkauth'])->group(function () {
-            Route::get('/login', AdminLogin::class)->name('login');
-            Route::get('/forget-password', AdminForgotPassword::class)->name('forget-password');
-            Route::get('/reset-password/{token}', AdminResetPassword::class)->name('reset-password');
+            Route::get('/login', AgentLogin::class)->name('login');
+            Route::get('/forget-password', AgentForgotPassword::class)->name('forget-password');
+            Route::get('/reset-password/{token}', AgentResetPassword::class)->name('reset-password');
         });
         Route::middleware(['agent', 'redirectifauth'])->group(function () {
-            Route::get('/dashboard', function () {
-                return 'Agent dashboard';
-            })->name('dashboard');
+             Route::post('/logout', function () {
+                Auth::guard('agent')->logout();
+
+                session()->invalidate();
+                session()->regenerateToken();
+
+                return redirect()->route('agent.login');
+            })->name('logout');
+
+            Route::get('/dashboard', AgentHome::class)->name('dashboard');
+            Route::get('/profile', Profile::class)->name('profile');
+          
+
+      
         });
     });

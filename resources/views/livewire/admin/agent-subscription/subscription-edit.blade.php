@@ -2,8 +2,8 @@
 
     <!-- Header -->
     <div class="relative">
-        <x-header-section headerwprimary="Create" headerwsecondary="Subscription"
-            tagline="Set up a new subscription plan for your facility." />
+        <x-header-section headerwprimary="Edit Agent" headerwsecondary="Subscription"
+            tagline="Update the details and configuration of this agent subscription plan." />
     </div>
 
     <!-- Alerts Section -->
@@ -31,32 +31,11 @@
                         </div>
                         <div>
                             <h2 class="text-xl font-bold text-dark">Plan Details</h2>
-                            <p class="text-sm text-dark/50">Define the core attributes of this subscription</p>
+                            <p class="text-sm text-dark/50">Modify the core attributes of this plan</p>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
-
-                        <!-- Subscription Category Select -->
-                        <div class="space-y-2">
-                            <label class="block ml-1 text-sm font-semibold text-dark/70">Subscription Category</label>
-                            <div class="relative group">
-                                <select wire:model="subscription_category_id"
-                                    class="w-full px-4 py-3 transition-all border border-gray-200 outline-none appearance-none cursor-pointer bg-gray-50 rounded-2xl text-dark focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10">
-                                    <option value="">Select Category</option>
-                                    @foreach ($subscriptionCategories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                                <div
-                                    class="absolute inset-y-0 flex items-center text-gray-400 pointer-events-none right-4">
-                                    <x-heroicon-o-chevron-down class="w-5 h-5" />
-                                </div>
-                            </div>
-                            @error('subscription_category_id')
-                                <span class="block ml-1 text-xs font-medium text-red-500">{{ $message }}</span>
-                            @enderror
-                        </div>
+                    <div class="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-1">
 
                         <!-- Name -->
                         <div class="space-y-2">
@@ -83,18 +62,18 @@
                             @enderror
                         </div>
 
-                        <!-- Days Input -->
+                        <!-- Coins Input -->
                         <div class="space-y-2">
                             <label class="block ml-1 text-sm font-semibold text-dark/70">Validity Period</label>
                             <div class="relative">
-                                <input type="number" wire:model="days"
+                                <input type="number" wire:model="coins"
                                     class="w-full px-4 py-3 transition-all border border-gray-200 outline-none bg-gray-50 rounded-2xl text-dark focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10"
                                     placeholder="e.g. 30">
                                 <div class="absolute inset-y-0 flex items-center text-gray-400 right-4">
-                                    <span class="text-sm font-medium">Days</span>
+                                    <span class="text-sm font-medium">Coins</span>
                                 </div>
                             </div>
-                            @error('days')
+                            @error('coins')
                                 <span class="block ml-1 text-xs font-medium text-red-500">{{ $message }}</span>
                             @enderror
                         </div>
@@ -102,10 +81,14 @@
 
                     <!-- Description -->
                     <div class="mt-8 space-y-2">
-                        <label class="block ml-1 text-sm font-semibold text-dark/70">Plan Description</label>
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="block ml-1 text-sm font-semibold text-dark/70">Plan Description</label>
+                            <span class="text-[11px] font-medium text-primary bg-primary/10 px-2 py-1 rounded-md">Comma
+                                Separated</span>
+                        </div>
                         <textarea wire:model="description" rows="4"
                             class="w-full px-4 py-3 transition-all border border-gray-200 outline-none bg-gray-50 rounded-2xl text-dark focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10"
-                            placeholder="Describe what's included in this plan..."></textarea>
+                            placeholder="Describe what's included..."></textarea>
                         <div class="flex items-center gap-2 px-1 text-dark/40">
                             <x-heroicon-o-information-circle class="w-4 h-4" />
                             <p class="text-[11px]">Separate items with commas for better app formatting.</p>
@@ -142,36 +125,13 @@
                                 </div>
                                 <div>
                                     <p class="text-sm font-bold text-dark">Active Plan</p>
-                                    <p class="text-[11px] text-dark/50">Available for users</p>
+                                    <p class="text-[11px] text-dark/50">Available for agents</p>
                                 </div>
                             </div>
-                            <!-- Custom Toggle Switch -->
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" wire:model="is_active" class="sr-only peer">
                                 <div
                                     class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
-                                </div>
-                            </label>
-                        </div>
-
-                        <!-- Feature Status Toggle -->
-                        <div
-                            class="flex items-center justify-between p-4 transition-all border border-gray-100 bg-gray-50 rounded-2xl hover:bg-white hover:border-primary/20 group">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="flex items-center justify-center transition-transform w-9 h-9 text-amber-600 bg-amber-100 rounded-xl group-hover:scale-110">
-                                    <x-heroicon-o-star class="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <p class="text-sm font-bold text-dark">Featured Plan</p>
-                                    <p class="text-[11px] text-dark/50">Highlight in the store</p>
-                                </div>
-                            </div>
-                            <!-- Custom Toggle Switch -->
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" wire:model="is_feature" class="sr-only peer">
-                                <div
-                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500">
                                 </div>
                             </label>
                         </div>
@@ -184,12 +144,13 @@
                         class="group relative flex items-center justify-center w-full gap-3 py-4 font-bold text-white transition-all transform bg-gradient-to-r from-primary to-secondary rounded-2xl hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-1 active:scale-[0.98] disabled:opacity-70">
 
                         <span wire:loading.remove wire:target="saveSubscription" class="flex items-center gap-2">
-                            Create Subscription
+                            Update Subscription
                             <x-heroicon-o-arrow-right class="w-5 h-5 transition-transform group-hover:translate-x-1" />
                         </span>
 
                         <span wire:loading wire:target="saveSubscription" class="flex items-center gap-2">
-                            Saving Plan...
+
+                            Saving Changes...
                         </span>
                     </button>
                 </div>

@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Mail\ResetPasswordMail;
 use Database\Seeders\UserSeeder;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
+use Laravel\Sanctum\HasApiTokens;
 
 #[Fillable([
     'name',
@@ -18,18 +22,25 @@ use Illuminate\Notifications\Notifiable;
     'profile_image',
     'fcm_token',
     'coins',
-    'gender',
     'is_online',
     'is_blocked',
     'is_verified',
     'is_subscribed',
     'subscription_id',
+    'interest',
+    'gender',
+    'material_status',
 ])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
+class User extends Authenticatable implements CanResetPassword
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens,HasFactory, Notifiable;
+
+    public function sendPasswordResetNotification($token): void
+    {
+        Mail::to($this->email)->send(new ResetPasswordMail($token, $this->email, 'user'));
+    }
 
     /**
      * Get the attributes that should be cast.
@@ -46,7 +57,7 @@ class User extends Authenticatable
             'is_blocked' => 'boolean',
             'is_verified' => 'boolean',
             'is_subscribed' => 'boolean',
-            'gender' => 'integer',
+            'gender' => 'string',
             'coins' => 'integer',
         ];
     }

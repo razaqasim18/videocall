@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin;
+namespace App\Livewire;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -17,7 +17,7 @@ class Profile extends Component
     public ?string $profile = '';
     public function mount()
     {
-        $user = Auth::guard('admin')->user();
+        $user = Auth::guard('agent')->check() ? Auth::guard('agent')->user() : Auth::guard('admin')->user() ;
         $this->email = $user->email;
         $this->name = $user->name;
         $this->profile = $user->profile_image;
@@ -54,6 +54,6 @@ class Profile extends Component
 
     public function render()
     {
-        return view('livewire.admin.profile');
+        return view('livewire.profile');
     }
 }
