@@ -52,7 +52,11 @@
             @csrf
         </form>
     @endauth
-
+    <div id="sound">
+        <audio id="notifyAudio" preload="auto">
+            <source src="{{ asset('sounds/notification.mp3') }}" type="audio/mpeg">
+        </audio>
+    </div>
     @auth('admin')
         <form x-ref="logoutForm" method="POST" action="{{ route('admin.logout') }}" class="hidden">
             @csrf
@@ -73,8 +77,46 @@
             }
         });
     </script>
+    @auth('admin')
+        <script>
+            var lastPlayed = 0;
+
+            function playNotification() {
+                const now = Date.now();
+                if (now - lastPlayed < 1000) return;
+                lastPlayed = now;
+
+                const audio = document.getElementById("notifyAudio");
+                if (audio) {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                // Pass only the ID number
+                const adminId = {{ auth()->guard('admin')->id() ?? 'null' }};
+
+                if (!adminId || adminId === 'null') {
+                    console.error('Admin ID not found');
+                    return;
+                }
+
+                if (!window.Echo) {
+                    console.error('Echo not loaded');
+                    return;
+                }
 
 
+                window.Echo.private(`App.Models.Admin.${adminId}`)
+                    .notification((notification) => {
+                        // console.log('Notification received:', notification);
+                        playNotification();
+                        Livewire.dispatch('new-notification');
+                    });
+            });
+        </script>
+    @endauth
 </body>
 
 </html>

@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use App\Mail\ResetPasswordMail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Mail;
 
 class Agent extends Authenticatable implements CanResetPasswordContract
@@ -38,5 +39,14 @@ class Agent extends Authenticatable implements CanResetPasswordContract
             )
         );
     }
-}
 
+    public function walletTransaction(): HasMany
+    {
+        return $this->hasMany(AgentWalletTransaction::class);
+    }
+
+    public function agentTransaction(): HasMany
+    {
+        return $this->hasMany(AgentPackageTransaction::class);
+    }
+}

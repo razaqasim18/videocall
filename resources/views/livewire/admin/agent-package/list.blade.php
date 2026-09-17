@@ -6,8 +6,8 @@
                 <x-heroicon-o-building-office class="w-6 h-6" />
             </div>
             <div class=""> 
-                <h1 class="text-3xl font-bold text-dark">Agent Subscription <span class="text-primary">List</span></h1>
-                <p class="text-dark/60">Review and manage agent subscription list.</p>
+                <h1 class="text-3xl font-bold text-dark">Agent Package <span class="text-primary">List</span></h1>
+                <p class="text-dark/60">Review and manage agent package list.</p>
             </div>
         </div>
 
@@ -28,10 +28,10 @@
                 class="w-full py-3 pr-4 transition-all border shadow-sm outline-none pl-11 bg-surface border-primary/10 rounded-2xl text-dark focus:border-primary focus:ring-1 focus:ring-primary" />
         </div>
         <!-- Add Button -->
-        <a href="{{ route('admin.agent.subscriptions.create') }}" wire:navigate
+        <a href="{{ route('admin.agent.packages.create') }}" wire:navigate
             class="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white transition-all shadow-sm rounded-2xl bg-primary hover:bg-primary/90">
             <x-heroicon-o-plus class="w-5 h-5" />
-            Add Agent Subscription
+            Add Agent Package
         </a>
     </div>
 
@@ -73,7 +73,7 @@
                             </td>
                             <td class="px-6 py-4 text-center">
                                 <div class="flex justify-center gap-2">
-                                    <a href="{{ route('admin.agent.subscriptions.edit', ['id' => $subscription->id]) }}"
+                                    <a href="{{ route('admin.agent.packages.edit', ['id' => $subscription->id]) }}"
                                         wire:navigate>
                                         <button
                                             class="p-2 text-sm font-medium transition-colors rounded-lg text-primary hover:bg-primary/10">
@@ -95,7 +95,7 @@
                                         class="flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full text-dark/20">
                                         <x-heroicon-o-user-group class="w-8 h-8" />
                                     </div>
-                                    <h3 class="text-lg font-bold text-dark">No Agent Subscriptions Found</h3>
+                                    <h3 class="text-lg font-bold text-dark">No Agent Packages Found</h3>
                                     <p class="text-dark/60">Search criteria returned no results.</p>
                                 </div>
                             </td>
@@ -112,8 +112,8 @@
     </div>
 
     <div wire:ignore>
-        <x-delete-modal id="deleteModal" title="Delete Agent Subscription"
-            message="Are you sure you want to delete this Agent Subscription?" confirmAction="delete"
+        <x-delete-modal id="deleteModal" title="Delete Agent Package"
+            message="Are you sure you want to delete this Agent Package?" confirmAction="delete"
             closeAction="closeDeleteModal" />
     </div>
     <script>

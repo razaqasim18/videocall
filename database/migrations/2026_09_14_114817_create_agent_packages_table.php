@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('agent_subscriptions', function (Blueprint $table) {
+        Schema::create('agent_packages', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('agent_subscriptions');
+        Schema::dropIfExists('agent_packages');
     }
 };

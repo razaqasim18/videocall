@@ -1,9 +1,26 @@
 <div class="space-y-8">
-    <!-- Header -->
+
+     <!-- Header Section -->
+    <div class="space-y-8">
+        <x-header-section headerwprimary="Profile" headerwsecondary="Update"
+            tagline="Update your personal information and profile." />
+    </div>
+
+    <!-- Alerts -->
+    <div id="successdiv">
+        @if (session()->has('success'))
+            <x-alert :message="session()->get('success')" status="1"></x-alert>
+        @endif
+        @if (session()->has('error'))
+            <x-alert :message="session()->get('error')" status="0"></x-alert>
+        @endif
+    </div>    
+
+
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-3xl font-bold text-dark">Profile <span class="text-primary">Settings</span></h1>
-            <p class="text-dark/60">Update your personal information and facility profile.</p>
+            <p class="text-dark/60"></p>
         </div> 
 
         <div id="successdiv">

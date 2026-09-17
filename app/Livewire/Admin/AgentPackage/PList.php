@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Livewire\Admin\AgentSubscription;
+namespace App\Livewire\Admin\AgentPackage;
 
-use App\Models\AgentSubscription;
+use App\Models\AgentPackage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 #[Layout('layouts.dashboard')]
-class SubscriptionList extends Component
+class PList extends Component
 {
     use WithPagination;
 
@@ -44,9 +44,9 @@ class SubscriptionList extends Component
     public function delete()
     {
         if ($this->subscriptionIdToDelete) {
-            AgentSubscription::find($this->subscriptionIdToDelete)->delete();
+            AgentPackage::find($this->subscriptionIdToDelete)->delete();
 
-            session()->flash('success', 'Agent Subscription deleted successfully.');
+            session()->flash('success', 'Agent Package deleted successfully.');
 
             $this->dispatch('close-delete-modal');
             $this->dispatch('scroll-to-top');
@@ -55,8 +55,8 @@ class SubscriptionList extends Component
 
     public function render()
     {
-        return view('livewire.admin.agent-subscription.subscription-list', [
-            'subscriptions' => AgentSubscription::when($this->search, function ($query) {
+        return view('livewire.admin.agent-package.list', [
+            'subscriptions' => AgentPackage::when($this->search, function ($query) {
                 $query->where(function ($q) {
                     $q->where('name', 'like', '%'.$this->search.'%')
                         ->orWhere('price', 'like', '%'.$this->search.'%')
@@ -65,7 +65,7 @@ class SubscriptionList extends Component
             })
                 ->orderBy('id', 'desc')
                 ->paginate(10)
-                ->withPath(route('admin.agent.subscriptions.list')),
+                ->withPath(route('admin.agent.packages.list')),
         ]); 
     }
 }

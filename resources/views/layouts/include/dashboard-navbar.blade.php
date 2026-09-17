@@ -12,8 +12,13 @@
     <!-- User Actions -->
     <div class="flex items-center gap-4 ml-auto" x-data="{ profileOpen: false }">
 
+         <div class="flex items-end gap-4 ml-auto" x-data="{ notifOpen: false, profileOpen: false }">
+
         <!-- NOTIFICATION DROPDOWN -->
-     
+        @auth('admin')
+            <livewire:notification-dropdown />
+        @endauth
+
 
         <!-- PROFILE DROPDOWN -->
         <div class="relative">
@@ -21,8 +26,7 @@
                 class="flex items-center gap-3 pl-4 border-l border-primary/10 focus:outline-none group">
                 <div class="hidden text-right sm:block">
                     <p class="text-sm font-bold leading-none transition-colors text-dark group-hover:text-primary">
-                        {{ $user->name }}
-                    </p>
+                        {{ $user->name }}</p>
                     <p class="mt-1 text-xs text-dark/50">
                         @auth('agent')
                             Agent
@@ -46,22 +50,40 @@
                 <!-- User Detail Header -->
                 <div class="p-4 border-b bg-gray-50/50 border-primary/10">
                     <p class="text-sm font-bold text-dark">
-                        {{ $user->name }}
+                        {{ $user->name }}</p>
                     </p>
                     <p class="text-xs truncate text-dark/50">
-                        {{ $user->email }}
+                        {{ $user->email }}</p>
                     </p>
                 </div>
 
-                @auth('admin')
-                    <a href="{{ route('admin.profile') }}" wire:navigate
-                        class="flex items-center gap-3 px-3 py-2 text-sm transition-all rounded-lg text-dark/70 hover:bg-primary/10 hover:text-primary">
-                        <x-heroicon-o-user-circle class="w-4 h-4" />
-                        Profile Settings
-                    </a>
-                @endauth
+                <!-- Menu Links -->
 
-            
+                <div class="p-2">
+                    @auth('admin')
+                        <a href="{{ route('admin.profile') }}" wire:navigate
+                            class="flex items-center gap-3 px-3 py-2 text-sm transition-all rounded-lg text-dark/70 hover:bg-primary/10 hover:text-primary">
+                            <x-heroicon-o-user-circle class="w-4 h-4" />
+                            Profile Settings
+                        </a>
+                    @endauth
+                    @auth('agent')
+                        <a href="{{ route('agent.profile') }}" wire:navigate
+                            class="flex items-center gap-3 px-3 py-2 text-sm transition-all rounded-lg text-dark/70 hover:bg-primary/10 hover:text-primary">
+                            <x-heroicon-o-user-circle class="w-4 h-4" />
+                            Profile Settings
+                        </a>
+                    @endauth
+                    {{-- <a href="#"
+                          class="flex items-center gap-3 px-3 py-2 text-sm transition-all rounded-lg text-dark/70 hover:bg-primary/10 hover:text-primary">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                          </svg>
+                          Billing & Plans
+                      </a> --}}
+                </div>
+
                 <!-- Logout Section -->
                 <div class="p-2 border-t border-primary/10">
                     <button @click="$refs.logoutForm.submit()"
@@ -72,6 +94,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
   

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Livewire\Admin\AgentSubscription;
+namespace App\Livewire\Admin\AgentPackage;
 
-use App\Models\AgentSubscription;
+use App\Models\AgentPackage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-class SubscriptionCreate extends Component
+class Create extends Component
 {
     #[Layout('layouts.dashboard')]
     public ?string $name = '';
@@ -24,7 +24,7 @@ class SubscriptionCreate extends Component
             'description' => 'nullable|string',
         ]);
 
-        AgentSubscription::create([
+        AgentPackage::create([
             'name' => $this->name,
             'price' => $this->price,
             'coins' => $this->coins,
@@ -32,7 +32,7 @@ class SubscriptionCreate extends Component
             'is_active' => $this->is_active ? 1 : 0, // Consistency: cast to 1/0
        ]);
 
-        session()->flash('success', 'Agent Subscription created successfully!');
+        session()->flash('success', 'Agent Package created successfully!');
 
         $this->reset([
             'name',
@@ -47,6 +47,6 @@ class SubscriptionCreate extends Component
 
     public function render()
     {
-        return view('livewire.admin.agent-subscription.subscription-create');
+        return view('livewire.admin.agent-package.create');
     }
 }

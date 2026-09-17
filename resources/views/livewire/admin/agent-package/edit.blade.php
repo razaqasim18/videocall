@@ -1,11 +1,11 @@
 <div class="pb-12 mx-auto space-y-8 max-w-7xl">
 
-    <!-- Header --> 
+    <!-- Header -->
     <div class="relative">
-        <x-header-section headerwprimary="Create Agent" headerwsecondary="Subscription"
-            tagline="Set up a new agent subscription plan for your facility." />
+        <x-header-section headerwprimary="Edit Agent" headerwsecondary="Package"
+            tagline="Update the details and configuration of this agent package plan." />
     </div>
- 
+
     <!-- Alerts Section -->
     <div id="successdiv" class="max-w-3xl mx-auto">
         @if (session()->has('success'))
@@ -19,7 +19,7 @@
     <!-- START FORM -->
     <form wire:submit.prevent="saveSubscription" class="grid grid-cols-1 gap-8 lg:grid-cols-3">
 
-        <!-- LEFT COLUMN: Main Subscription Details -->
+        <!-- LEFT COLUMN: Main Package Details -->
         <div class="space-y-6 lg:col-span-2">
             <div class="p-1 border shadow-sm bg-white rounded-[2rem] border-gray-100">
                 <!-- Inner Card Padding -->
@@ -31,7 +31,7 @@
                         </div>
                         <div>
                             <h2 class="text-xl font-bold text-dark">Plan Details</h2>
-                            <p class="text-sm text-dark/50">Define the core attributes of this subscription</p>
+                            <p class="text-sm text-dark/50">Modify the core attributes of this plan</p>
                         </div>
                     </div>
 
@@ -39,7 +39,7 @@
 
                         <!-- Name -->
                         <div class="space-y-2">
-                            <label class="block ml-1 text-sm font-semibold text-dark/70">Subscription Name</label>
+                            <label class="block ml-1 text-sm font-semibold text-dark/70">Package Name</label>
                             <input type="text" wire:model="name"
                                 class="w-full px-4 py-3 transition-all border border-gray-200 outline-none bg-gray-50 rounded-2xl text-dark focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10"
                                 placeholder="e.g. Gold Monthly Plan">
@@ -64,7 +64,7 @@
 
                         <!-- Coins Input -->
                         <div class="space-y-2">
-                            <label class="block ml-1 text-sm font-semibold text-dark/70">Coins</label>
+                            <label class="block ml-1 text-sm font-semibold text-dark/70">Validity Period</label>
                             <div class="relative">
                                 <input type="number" wire:model="coins"
                                     class="w-full px-4 py-3 transition-all border border-gray-200 outline-none bg-gray-50 rounded-2xl text-dark focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10"
@@ -81,10 +81,14 @@
 
                     <!-- Description -->
                     <div class="mt-8 space-y-2">
-                        <label class="block ml-1 text-sm font-semibold text-dark/70">Plan Description</label>
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="block ml-1 text-sm font-semibold text-dark/70">Plan Description</label>
+                            <span class="text-[11px] font-medium text-primary bg-primary/10 px-2 py-1 rounded-md">Comma
+                                Separated</span>
+                        </div>
                         <textarea wire:model="description" rows="4"
                             class="w-full px-4 py-3 transition-all border border-gray-200 outline-none bg-gray-50 rounded-2xl text-dark focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10"
-                            placeholder="Describe what's included in this plan..."></textarea>
+                            placeholder="Describe what's included..."></textarea>
                         <div class="flex items-center gap-2 px-1 text-dark/40">
                             <x-heroicon-o-information-circle class="w-4 h-4" />
                             <p class="text-[11px]">Separate items with commas for better app formatting.</p>
@@ -124,7 +128,6 @@
                                     <p class="text-[11px] text-dark/50">Available for agents</p>
                                 </div>
                             </div>
-                            <!-- Custom Toggle Switch -->
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" wire:model="is_active" class="sr-only peer">
                                 <div
@@ -132,7 +135,6 @@
                                 </div>
                             </label>
                         </div>
-
                     </div>
                 </div>
 
@@ -142,12 +144,13 @@
                         class="group relative flex items-center justify-center w-full gap-3 py-4 font-bold text-white transition-all transform bg-gradient-to-r from-primary to-secondary rounded-2xl hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-1 active:scale-[0.98] disabled:opacity-70">
 
                         <span wire:loading.remove wire:target="saveSubscription" class="flex items-center gap-2">
-                            Create Subscription
+                            Update Package
                             <x-heroicon-o-arrow-right class="w-5 h-5 transition-transform group-hover:translate-x-1" />
                         </span>
 
                         <span wire:loading wire:target="saveSubscription" class="flex items-center gap-2">
-                            Saving Plan...
+
+                            Saving Changes...
                         </span>
                     </button>
                 </div>

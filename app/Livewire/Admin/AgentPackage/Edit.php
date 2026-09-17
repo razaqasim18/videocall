@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Livewire\Admin\AgentSubscription;
+namespace App\Livewire\Admin\AgentPackage;
 
-use App\Models\AgentSubscription;
+use App\Models\AgentPackage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-class SubscriptionEdit extends Component
+class Edit extends Component
 {
     #[Layout('layouts.dashboard')]
 
@@ -31,7 +31,7 @@ class SubscriptionEdit extends Component
         $this->id = $id;
 
         // Fetch the subscription and fill the form
-        $subscription = AgentSubscription::findOrFail($id);
+        $subscription = AgentPackage::findOrFail($id);
 
         $this->name = $subscription->name;
         $this->price = $subscription->price;
@@ -50,7 +50,7 @@ class SubscriptionEdit extends Component
         ]);
 
         // Find the model instance and update it
-        $subscription = AgentSubscription::findOrFail($this->id);
+        $subscription = AgentPackage::findOrFail($this->id);
 
         $subscription->update([
             'name' => $this->name,
@@ -60,12 +60,12 @@ class SubscriptionEdit extends Component
             'is_active' => $this->is_active ? 1 : 0,
         ]);
 
-        session()->flash('success', 'Agent Subscription updated successfully!');
+        session()->flash('success', 'Agent Package updated successfully!');
         $this->dispatch('scroll-to-top');
     }
 
     public function render()
     {
-        return view('livewire.admin.agent-subscription.subscription-edit');
+        return view('livewire.admin.agent-package.edit');
     }
 }
