@@ -86,7 +86,7 @@
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
 
     <script>
-        document.addEventListener('livewire:init', () => {
+        document.addEventListener('livewire:navigated', () => {
             const initSummernote = () => {
                 const $el = $('#summernote_blog');
                 if ($el.length === 0) return;

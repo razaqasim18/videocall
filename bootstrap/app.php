@@ -1,20 +1,28 @@
 <?php
 
+use App\Http\Middleware\Authentication;
+use App\Http\Middleware\EnsureAdmin;
+use App\Http\Middleware\EnsureAgent;
+use App\Http\Middleware\RedirectIfAuthenticated;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route; // Added this for custom routing
+use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
+
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         api: __DIR__.'/../routes/api.php',
         commands: __DIR__.'/../routes/console.php',
         channels: __DIR__.'/../routes/channels.php',
         health: '/up',
-        // Correct way to add custom route files in Laravel 11
+
         then: function () {
+
             Route::middleware('web')
                 ->prefix('admin')
                 ->name('admin.')
@@ -26,17 +34,34 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->group(base_path('routes/agent.php'));
         },
     )
+
     ->withMiddleware(function (Middleware $middleware): void {
+
         $middleware->alias([
-            // Added leading backslashes to properly reference the App namespace
-            'admin' => \App\Http\Middleware\EnsureAdmin::class,
-            'agent' => \App\Http\Middleware\EnsureAgent::class,
-            'redirectifauth' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-            'checkauth' => \App\Http\Middleware\Authentication::class,
+            'admin' => EnsureAdmin::class,
+            'agent' => EnsureAgent::class,
+            'redirectifauth' => RedirectIfAuthenticated::class,
+            'checkauth' => Authentication::class,
         ]);
     })
+
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->shouldRenderJsonWhen(
-            fn (Request $request) => $request->is('api/*'),
-        );
-    })->create();
+
+        $exceptions->render(function (
+            AuthenticationException $e,
+            Request $request
+        ) {
+
+            if ($request->is('api/*')) {
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized',
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+
+        });
+
+    })
+
+    ->create();

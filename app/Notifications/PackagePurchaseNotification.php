@@ -16,9 +16,12 @@ class PackagePurchaseNotification extends Notification
      */
     public AgentPackageTransaction $package;
 
-    public function __construct($package)
+    public string $type;
+
+    public function __construct($package, $type)
     {
         $this->package = $package;
+        $this->type = $type;
     }
 
     /**
@@ -38,9 +41,11 @@ class PackagePurchaseNotification extends Notification
      */
     public function toArray($notifiable)
     {
+        $message = $this->type == 'new' ? $this->package->package->name.' package is purchased' : $this->package->package->name.' updated its purchased';
+
         return [
             'title' => 'New Package package',
-            'message' => $this->package->package->name.'is purchased by agent',
+            'message' => $message,
             'package_id' => $this->package->id,
             'agent_id' => $this->package->agent_id,
             'agent_package_transactions' => $this->package->id,
@@ -50,9 +55,11 @@ class PackagePurchaseNotification extends Notification
 
     public function toBroadcast($notifiable)
     {
+        $message = $this->type == 'new' ? $this->package->package->name.' package is purchased' : $this->package->package->name.' updated its purchased';
+
         return new BroadcastMessage([
             'title' => 'New Package package',
-            'message' => $this->package->name.'is purchased by agent',
+            'message' => $message,
             'package_id' => $this->package->id,
             'agent_id' => $this->package->agent_id,
             'agent_package_transactions' => $this->package->id,

@@ -31,7 +31,7 @@
                     $type = $notification->data['type'] ?? null;
 
                     $link = match ($type) {
-                        'package_purchase' => route('admin.agent.package.detail', [
+                        'package_purchase' => route('admin.agent.purchase.packages.detail', [
                             'id' => $notification->data['agent_id'] ?? 0,
                         ]),
                         'corporate_register' => route('admin.corporate.edit', [

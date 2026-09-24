@@ -1,33 +1,53 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DailyRewardController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\SettingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/social-login', [AuthController::class, 'socialLogin']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 
-// Protected Routes
+/*
+|--------------------------------------------------------------------------
+| Protected Routes (Require Sanctum Auth)
+|--------------------------------------------------------------------------
+*/
 Route::middleware('auth:sanctum')->group(function () {
-    //
-    Route::post('/profile/update', [ProfileController::class, 'updateProfile']);
 
-    // get list
-    Route::prefix('/get')->name('get')->group(function () {});
-
+    // User & Auth
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+
     Route::post('/logout', function (Request $request) {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json(['message' => 'Logged out']);
+        return response()->json(['message' => 'Logged out successfully']);
+    });
+
+    // Profile Management
+    Route::prefix('profile')->group(function () {
+        Route::post('/update', [ProfileController::class, 'updateProfile']);
+    });
+
+    // Daily Rewards
+    Route::prefix('daily-rewards')->group(function () {
+        Route::get('/list', [DailyRewardController::class, 'list']); // Changed from /get/daily/reward/list
+        Route::post('/claim', [DailyRewardController::class, 'claim']);
+    });
+
+    Route::prefix('setting')->group(function () {
+        Route::get('/privacy-policy', [SettingController::class, 'privacyPolicy']); // Changed from /get/daily/reward/list
+        Route::get('/term-condition', [SettingController::class, 'termCondition']); // Changed from /get/daily/reward/list
     });
 });
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
