@@ -4,10 +4,23 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserWalletTransaction;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
+    public function walletTransaction()
+    {
+        $data = UserWalletTransaction::where('user_id', auth()->id())->get();
+
+        return response()->json([
+            'success' => false,
+            'status' => 200,
+            'message' => 'data has been fetched successfully',
+            'data' => $data,
+        ], 200);
+    }
+
     public function updateProfile(Request $request)
     {
         $profile = User::findorFail(auth()->id());
@@ -21,7 +34,7 @@ class ProfileController extends Controller
                 'success' => true,
                 'status' => 200,
                 'message' => 'data is saved succesafully',
-                'profile' => $profile,
+                'data' => $profile,
             ], 200);
         } else {
             return response()->json([

@@ -2,92 +2,64 @@
 
 namespace App\Livewire;
 
-use App\Models\Admin;
-use App\Models\Agent;
-use App\Models\Partner;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('layouts.auth', ['title' => 'Reset Password'])]
 class ResetPassword extends Component
 {
-    public string $email = '';
-
     public string $token = '';
-
+    public string $email = '';
     public string $password = '';
-
     public string $password_confirmation = '';
 
-    public function mount()
+    public function mount(string $token): void
     {
-        $this->token = request()->query('token');
-        $this->email = request()->query('email');
+        $this->token = $token;
+        $this->email = request()->query('email', '');
     }
 
-    public function updatePassword()
+    public function resetPassword(): void
     {
         $this->validate([
-            'password' => 'required|min:8|confirmed',
+            'email' => ['required', 'email'],
+            'password' => ['required', 'confirmed', 'min:8'],
+            'password_confirmation' => ['required'],
         ]);
 
-        // Get reset token record
-        $record = DB::table('password_reset_tokens')
-            ->where('email', $this->email)
-            ->first();
+        $status = Password::broker('users')->reset(
+    [
+        'token' => $this->token,
+        'email' => $this->email,
+        'password' => $this->password,
+        'password_confirmation' => $this->password_confirmation,
+    ],
+    function (User $user, string $password) {
+        $user->forceFill([
+            'password' => Hash::make($password),
+        ])->setRememberToken(Str::random(60));
 
-        if (! $record) {
-            session()->flash('error', 'Invalid request');
+        $user->save();
+    }
+);
+ 
+        
+        if ($status === Password::PASSWORD_RESET) {
+           
+            $this->redirect(route('success.message', [
+                'status' => 'success',
+                'message' => 'Password has been reset successfully.',
+            ]));
+
 
             return;
         }
 
-        // Verify token
-        if (! Hash::check($this->token, $record->token)) {
-            session()->flash('error', 'Invalid or expired token');
-
-            return;
-        }
-
-        // Find user OR partner
-        $account = User::where('email', $this->email)->first();
-
-        $redirectRoute = route('success.page', [
-            'status' => 1,
-            'message' => 'Password updated successfully',
-        ]);
-
-        if (! $account) {
-            $account = Agent::where('email', $this->email)->first();
-            $redirectRoute = route('agent.login');
-        }
-
-        if (! $account) {
-            $account = Admin::where('email', $this->email)->first();
-            $redirectRoute = route('admin.login');
-        }
-
-        if (! $account) {
-            session()->flash('error', 'User not found');
-
-            return;
-        }
-
-        // Update password
-        $account->update([
-            'password' => Hash::make($this->password),
-        ]);
-
-        // Delete token
-        DB::table('password_reset_tokens')
-            ->where('email', $this->email)
-            ->delete();
-
-        return redirect($redirectRoute);
+        $this->addError('email', __($status));
     }
 
     public function render()

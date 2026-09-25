@@ -20,13 +20,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['checkauth'])->group(function () {
 
     Route::get('/login', AgentLogin::class)
-        ->name('agent.login');
+        ->name('login');
 
     Route::get('/forget-password', AgentForgotPassword::class)
-        ->name('agent.forget-password');
+        ->name('forget-password');
 
     Route::get('/reset-password/{token}', AgentResetPassword::class)
-        ->name('agent.reset-password');
+        ->name('reset-password');
 
 });
 

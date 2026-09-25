@@ -22,6 +22,7 @@ use Laravel\Sanctum\HasApiTokens;
     'profile_image',
     'fcm_token',
     'coins',
+    'wallet',
     'is_online',
     'is_blocked',
     'is_verified',
@@ -30,6 +31,7 @@ use Laravel\Sanctum\HasApiTokens;
     'interest',
     'gender',
     'material_status',
+    'phone',
 ])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements CanResetPassword
@@ -39,7 +41,13 @@ class User extends Authenticatable implements CanResetPassword
 
     public function sendPasswordResetNotification($token): void
     {
-        Mail::to($this->email)->send(new ResetPasswordMail($token, $this->email, 'user'));
+        Mail::to($this->email)->send(
+            new ResetPasswordMail(
+                $token,
+                $this->email,
+                'user'
+            )
+        );
     }
 
     /**

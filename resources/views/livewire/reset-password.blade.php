@@ -26,7 +26,7 @@
                 <x-alert class="mb-6" status="0" :message="session()->get('error')"></x-alert>
             @endif
             <!-- Form -->
-            <form wire:submit.prevent="updatePassword" class="space-y-6">
+            <form wire:submit.prevent="resetPassword" class="space-y-6">
 
                 <!-- New Password Field -->
                 <div class="relative group">
@@ -87,8 +87,8 @@
                 <!-- Submit Button -->
                 <button type="submit"
                     class="w-full bg-gradient-to-r from-primary to-secondary text-white font-bold py-3.5 rounded-xl hover:shadow-lg hover:shadow-primary/30 transition-all transform hover:-translate-y-0.5 active:scale-95">
-                    <span wire:loading.attr='hidden' wire:target="updatePassword">Update Password</span>
-                    <span wire:loading wire:target="updatePassword">Updating Password...</span>
+                    <span wire:loading.attr='hidden' wire:target="resetPassword">Update Password</span>
+                    <span wire:loading wire:target="resetPassword">Updating Password...</span>
                 </button>
             </form>
         </div>

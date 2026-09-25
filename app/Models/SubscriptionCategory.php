@@ -14,4 +14,9 @@ class SubscriptionCategory extends Model
     {
         return $query->where('is_active', 1);
     }
+
+    public function subscription()
+    {
+        return $this->hasMany(Subscription::class);
+    }
 }

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('profile_image')->nullable();
             $table->string('fcm_token')->nullable();
             $table->integer('coins')->default(0);
+            $table->decimal('wallet', 10, 2)->default(0.00);
             $table->boolean('gender')->default(0);
             $table->boolean('is_online')->default(0);
             $table->boolean('is_blocked')->default(0);

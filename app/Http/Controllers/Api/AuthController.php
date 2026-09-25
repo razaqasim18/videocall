@@ -23,31 +23,33 @@ class AuthController extends Controller
         ]);
 
         if (! Auth::attempt($request->only('email', 'password'))) {
-            return response()->json(['message' => 'Invalid login details'], 401);
+            return response()->json([
+                'success' => false,
+                'status' => 401,
+                'message' => 'Invalid login details',
+            ], 401);
         }
 
-        $user = User::where('email', $request->email)->first();
+        // Use Auth::user() instead of querying the database again
+        $user = Auth::user();
         $token = $user->createToken('auth_token')->plainTextToken;
-        $data = [
-            'token' => $token,
-            'user' => $user,
-        ];
 
         return response()->json([
             'success' => true,
             'status' => 200,
-            'message' => 'login succesafully',
-            'data' => $data,
+            'message' => 'Login successfully',
+            'data' => [
+                'token' => $token,
+                'user' => $user,
+            ],
         ], 200);
-
     }
 
-    // Social Login (Google & Facebook)
     public function socialLogin(Request $request)
     {
         $request->validate([
             'provider' => 'required|in:google,facebook',
-            'token' => 'required', // Token sent from Mobile App
+            'token' => 'required',
         ]);
 
         try {
@@ -60,17 +62,15 @@ class AuthController extends Controller
                 ->first();
 
             if (! $user) {
-                // Create new user if not found
                 $user = User::create([
                     'name' => $socialUser->getName(),
                     'email' => $socialUser->getEmail(),
                     'profile_image' => $socialUser->getAvatar(),
                     'provider_id' => $socialUser->getId(),
                     'provider_name' => $request->provider,
-                    'password' => null, // No password for social users
+                    'password' => null,
                 ]);
             } else {
-                // Update provider info if they registered with email first
                 $user->update([
                     'provider_id' => $socialUser->getId(),
                     'provider_name' => $request->provider,
@@ -78,32 +78,35 @@ class AuthController extends Controller
             }
 
             $token = $user->createToken('auth_token')->plainTextToken;
-            $data = [
-                'token' => $token,
-                'user' => $user,
-            ];
 
             return response()->json([
                 'success' => true,
                 'status' => 200,
-                'message' => 'login succesafully',
-                'data' => $data,
-            ]);
+                'message' => 'Social login successful',
+                'data' => [
+                    'token' => $token,
+                    'user' => $user,
+                ],
+            ], 200);
 
         } catch (Exception $e) {
-            return response()->json(['message' => 'Invalid social token', 'error' => $e->getMessage()], 401);
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid social token',
+                'error' => $e->getMessage(),
+            ], 401);
         }
     }
 
     public function register(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,name',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email', // FIXED: was unique:users,name
             'phone' => 'required|unique:users,phone',
-            'dob' => 'required',
-            'gender' => 'required',
-            'password' => 'required|min:3|max:8',
+            'dob' => 'required|date',
+            'gender' => 'required|in:male,female,other',
+            'password' => 'required|min:8', // FIXED: min:3 is insecure
         ]);
 
         if ($validation->fails()) {
@@ -126,25 +129,27 @@ class AuthController extends Controller
             ]);
 
             $token = $user->createToken('auth_token')->plainTextToken;
+
+            // Send welcome notification
             $user->notify(new UserWelcomeAPINotifcation($user));
 
-            return response()->json(
-                [
-                    'success' => true,
-                    'status' => 201,
-                    'message' => 'Registration successful',
-                    'registration_data' => [
-                        'user' => $user,
-                        'token' => $token,
-                    ],
+            return response()->json([
+                'success' => true,
+                'status' => 201,
+                'message' => 'Registration successful',
+                'registration_data' => [
+                    'user' => $user,
+                    'token' => $token,
                 ],
-                201,
-            );
+            ], 201);
 
         } catch (Exception $e) {
-            return response()->json(['message' => 'Invalid social token', 'error' => $e->getMessage()], 401);
+            return response()->json([
+                'success' => false,
+                'message' => 'Registration failed', // FIXED: was 'Invalid social token'
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
     }
 
     public function forgotPassword(Request $request)
@@ -163,10 +168,10 @@ class AuthController extends Controller
             ], 404);
         }
 
-        // This triggers the process.
-        $response = Password::broker('users')->sendResetLink($request->only('email'));
+        $response = Password::broker('users')->sendResetLink([
+            'email' => $request->email,
+        ]);
 
-        // FIX: You MUST use 'return' here, otherwise the browser gets no response
         return $response == Password::RESET_LINK_SENT
                 ? $this->sendResetLinkResponse($request, $response)
                 : $this->sendResetLinkFailedResponse($request, $response);
@@ -174,39 +179,31 @@ class AuthController extends Controller
 
     protected function sendResetLinkResponse($request, $response)
     {
-        return response()->json(
-            [
-                'success' => true,
-                'status' => 200,
-                'message' => 'Reset link sent to your email.',
-            ],
-            200,
-        );
+        return response()->json([
+            'success' => true,
+            'status' => 200,
+            'message' => 'Reset link sent to your email.',
+        ], 200);
     }
 
     protected function sendResetLinkFailedResponse($request, $response)
     {
-        return response()->json(
-            [
-                'success' => false,
-                'status' => 401,
-                'message' => 'We could not send the reset link.',
-            ],
-            401,
-        );
+        return response()->json([
+            'success' => false,
+            'status' => 401,
+            'message' => 'We could not send the reset link.',
+        ], 401);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        auth()->user()->currentAccessToken()->delete();
+        // Use the request user to delete the token
+        $request->user()->currentAccessToken()->delete();
 
-        return response()->json(
-            [
-                'success' => true,
-                'status' => 200,
-                'message' => 'Logout successful',
-            ],
-            200,
-        );
+        return response()->json([
+            'success' => true,
+            'status' => 200,
+            'message' => 'Logout successful',
+        ], 200);
     }
 }

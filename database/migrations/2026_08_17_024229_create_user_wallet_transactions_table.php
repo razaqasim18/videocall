@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->enum('type', ['credit', 'debit']);
             $table->decimal('amount', 10, 2);
-            $table->integer('balance_after');
+            $table->decimal('balance_after', 10, 2);
             $table->string('description')->nullable();
             $table->timestamps();
         });

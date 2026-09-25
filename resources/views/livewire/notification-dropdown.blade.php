@@ -37,8 +37,8 @@
                         'corporate_register' => route('admin.corporate.edit', [
                             'id' => $notification->data['corporate_id'] ?? 0,
                         ]),
-                        'contact_us' => route('admin.contact.detail', [
-                            'id' => $notification->data['contact_id'] ?? 0,
+                        'ticket' => route('admin.ticket.reply', [
+                            'id' => $notification->data['ticket_id'] ?? 0,
                         ]),
                         default => '#',
                     };
