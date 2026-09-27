@@ -32,7 +32,7 @@ use Laravel\Sanctum\HasApiTokens;
     'gender',
     'material_status',
     'phone',
-])]
+])] 
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements CanResetPassword
 {
