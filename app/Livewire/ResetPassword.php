@@ -22,8 +22,8 @@ class ResetPassword extends Component
         $this->token = $token;
         $this->email = request()->query('email', '');
     }
-
-    public function resetPassword(): void
+ 
+    public function resetPassword()
     {
         $this->validate([
             'email' => ['required', 'email'],
@@ -32,31 +32,28 @@ class ResetPassword extends Component
         ]);
 
         $status = Password::broker('users')->reset(
-    [
-        'token' => $this->token,
-        'email' => $this->email,
-        'password' => $this->password,
-        'password_confirmation' => $this->password_confirmation,
-    ],
-    function (User $user, string $password) {
-        $user->forceFill([
-            'password' => Hash::make($password),
-        ])->setRememberToken(Str::random(60));
+            [
+                'token' => $this->token,
+                'email' => $this->email,
+                'password' => $this->password,
+                'password_confirmation' => $this->password_confirmation,
+            ],
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                ])->setRememberToken(Str::random(60));
 
-        $user->save();
-    }
-);
- 
-        
+                $user->save();
+            }
+        );
         if ($status === Password::PASSWORD_RESET) {
-           
-            $this->redirect(route('success.message', [
-                'status' => 'success',
-                'message' => 'Password has been reset successfully.',
-            ]));
-
-
-            return;
+            
+            return $this->redirect(
+                route('success.message', [
+                    'status' => 1,
+                    'message' => 'Password has been reset successfully.',
+                ]),
+            );
         }
 
         $this->addError('email', __($status));
