@@ -7,6 +7,18 @@ use App\Models\Setting;
 
 class SettingController extends Controller
 {
+    public function list()
+    {
+        $setting = Setting::all();
+
+        return response()->json([
+            'success' => true,
+            'status' => 200,
+            'message' => 'setting is fetched successfully',
+            'data' => $setting,
+        ], 200);
+    }
+
     public function privacyPolicy()
     {
         $policy = Setting::where('key', 'privacy_policy')->first();

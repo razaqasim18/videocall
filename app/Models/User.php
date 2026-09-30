@@ -32,7 +32,7 @@ use Laravel\Sanctum\HasApiTokens;
     'gender',
     'material_status',
     'phone',
-])] 
+])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements CanResetPassword
 {
@@ -130,6 +130,26 @@ class User extends Authenticatable implements CanResetPassword
     {
         return $this->hasMany(
             MessageReadReceipt::class
+        );
+    }
+
+    public function following(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'follows',
+            'follower_id',
+            'following_id'
+        );
+    }
+
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'follows',
+            'following_id',
+            'follower_id'
         );
     }
 }

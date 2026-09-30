@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CallingController;
 use App\Http\Controllers\Api\DailyRewardController;
+use App\Http\Controllers\Api\FollowController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\SubscriptionController;
@@ -37,6 +39,21 @@ Route::middleware('auth:sanctum')->group(function () {
         return response()->json(['message' => 'Logged out successfully']);
     });
 
+    // Match
+    Route::prefix('call')->group(function () {
+        Route::get('/match', [CallingController::class, 'match']);
+        Route::post('/start', [CallingController::class, 'start']);
+        Route::post('/connected', [CallingController::class, 'connected']);
+        Route::post('/end', [CallingController::class, 'end']);
+        Route::post('/rejected', [CallingController::class, 'rejected']);
+    });
+
+    // follower
+    Route::prefix('follower')->group(function () {
+        Route::get('/add', [FollowController::class, 'add']);
+        Route::post('/remove', [FollowController::class, 'remove']);
+    });
+
     // Profile Management
     Route::prefix('profile')->group(function () {
         Route::get('/wallet-transaction', [ProfileController::class, 'walletTransaction']);
@@ -64,6 +81,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // setting
     Route::prefix('setting')->group(function () {
+        Route::get('/list', [SettingController::class, 'list']); // Changed from /get/daily/reward/list
         Route::get('/privacy-policy', [SettingController::class, 'privacyPolicy']); // Changed from /get/daily/reward/list
         Route::get('/term-condition', [SettingController::class, 'termCondition']); // Changed from /get/daily/reward/list
     });

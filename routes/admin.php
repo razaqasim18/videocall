@@ -31,6 +31,7 @@ use App\Livewire\Admin\Ticket\TList;
 use App\Livewire\Admin\User\Detail as UserDetail;
 use App\Livewire\Admin\User\UList as Users;
 use App\Livewire\Profile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // admin routes

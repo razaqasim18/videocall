@@ -39,6 +39,12 @@ class GeneralSetting extends Component
 
     public ?string $agent_commission_type = null;
 
+    public ?string $call_per_minute = null;
+
+    public ?string $call_per_minute_coin = null;
+
+    public ?string $call_start_coin = null;
+
     public function mount()
     {
         // Fetch all settings at once to avoid 7 different database queries
@@ -53,6 +59,9 @@ class GeneralSetting extends Component
         $this->favicon = $settings['favicon'] ?? null;
         $this->agent_commission_type = $settings['agent_commission_type'] ?? null;
         $this->agent_commission_amount = $settings['agent_commission_amount'] ?? null;
+        $this->call_per_minute = $settings['call_per_minute'] ?? null;
+        $this->call_per_minute_coin = $settings['call_per_minute_coin'] ?? null;
+        $this->call_start_coin = $settings['call_start_coin'] ?? null;
     }
 
     public function saveSettings()
@@ -64,6 +73,9 @@ class GeneralSetting extends Component
             'email' => 'required|email',
             'phone' => 'required|string|max:20',
             'address' => 'nullable|string',
+            'call_start_coin' => 'int|min:1',
+            'call_per_minute_coin' => 'int|min:1',
+            'call_per_minute' => 'int|min:1',
             'temlogo' => 'nullable|image|max:1024', // Max 1MB
             'temfavicon' => 'nullable|image|max:512', // Max 512KB
             'agent_commission_type' => 'required',
@@ -96,6 +108,9 @@ class GeneralSetting extends Component
             'email' => $this->email,
             'phone' => $this->phone,
             'address' => $this->address,
+            'call_start_coin' => $this->call_start_coin,
+            'call_per_minute_coin' => $this->call_per_minute_coin,
+            'call_per_minute' => $this->call_per_minute,
             'logo' => $this->logo,
             'favicon' => $this->favicon,
             'agent_commission_type' => $this->agent_commission_type,
