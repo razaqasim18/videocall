@@ -2,12 +2,15 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CallingController;
+use App\Http\Controllers\Api\CommonController;
 use App\Http\Controllers\Api\DailyRewardController;
 use App\Http\Controllers\Api\FollowController;
+use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\SubscriptionController;
 use App\Http\Controllers\Api\TicketController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +23,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/social-login', [AuthController::class, 'socialLogin']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
-
+Route::get('/countries', [CommonController::class, 'getCountries']);
 /*
 |--------------------------------------------------------------------------
 | Protected Routes (Require Sanctum Auth)
@@ -29,8 +32,8 @@ Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::middleware('auth:sanctum')->group(function () {
 
     // User & Auth
-    Route::get('/user', function (Request $request) {
-        return $request->user();
+    Route::prefix('/people')->group(function () {
+        Route::post('/list', [UserController::class, 'list']);
     });
 
     Route::post('/logout', function (Request $request) {
@@ -50,13 +53,24 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // follower
     Route::prefix('follower')->group(function () {
-        Route::get('/add', [FollowController::class, 'add']);
+        Route::post('/add', [FollowController::class, 'add']);
         Route::post('/remove', [FollowController::class, 'remove']);
+    });
+
+    // post
+    Route::prefix('post')->group(function () {
+        Route::post('/list', [PostController::class, 'followingPosts']);
+        Route::post('/upload', [PostController::class, 'upload']);
+        Route::post('/like', [PostController::class, 'like']);
+        Route::post('/comment', [PostController::class, 'comment']);
+        Route::post('/comment-like', [PostController::class, 'commentLike']);
+        Route::post('/comment-reply', [PostController::class, 'commentReply']);
     });
 
     // Profile Management
     Route::prefix('profile')->group(function () {
         Route::get('/wallet-transaction', [ProfileController::class, 'walletTransaction']);
+        Route::post('/picture-update', [ProfileController::class, 'updateProfilepicture']);
         Route::post('/update', [ProfileController::class, 'updateProfile']);
     });
 

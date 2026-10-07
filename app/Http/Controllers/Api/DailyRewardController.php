@@ -48,6 +48,6 @@ class DailyRewardController extends Controller
             'status' => 200,
             'message' => 'Reward claimed successfully.',
             'data' => $dailyReward,
-        ]);
+        ], 200);
     }
 }

@@ -21,6 +21,30 @@ class ProfileController extends Controller
         ], 200);
     }
 
+    public function updateProfilepicture(Request $request)
+    {
+        $request->validate([
+            'media' => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:2048'],
+        ]);
+        $profile = User::findorFail(auth()->id());
+        $mediaPath = $request->file('media')->store('uploads/user', 'public');
+        $profile->profile_image = $mediaPath;
+        if ($profile->update()) {
+            return response()->json([
+                'success' => true,
+                'status' => 200,
+                'message' => 'data is saved succesafully',
+                'data' => $profile,
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'status' => 403,
+                'message' => 'Something went wrong',
+            ], 403);
+        }
+    }
+
     public function updateProfile(Request $request)
     {
         $profile = User::findorFail(auth()->id());
